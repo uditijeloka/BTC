@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BTC Events Coordinator — [Your Name]</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:       #1e1c1a;
+      --warm-bg:   #faf7f2;
+      --paper:     #ffffff;
+      --accent:    #c0622a;
+      --accent-lt: #f0ddd1;
+      --muted:     #7a6f65;
+      --border:    #e4ddd6;
+      --tag-bg:    #f5ede7;
+      --lora: 'Lora', Georgia, serif;
+      --sans: 'DM Sans', system-ui, sans-serif;
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--warm-bg);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.6;
+      overflow: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      background: rgba(250,247,242,0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 3rem;
+      height: 56px;
+    }
+    .nav-logo {
+      font-family: var(--lora);
+      font-size: 0.95rem;
+      color: var(--accent);
+      font-style: italic;
+      cursor: pointer;
+    }
+    .nav-links {
+      display: flex;
+      gap: 0.25rem;
+      list-style: none;
+    }
+    .nav-links button {
+      background: none;
+      border: none;
+      font-family: var(--sans);
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      cursor: pointer;
+      padding: 0.4rem 0.9rem;
+      border-radius: 4px;
+      transition: color 0.2s, background 0.2s;
+    }
+    .nav-links button:hover { color: var(--accent); background: var(--accent-lt); }
+    .nav-links button.active { color: var(--accent); font-weight: 600; }
+
+    /* ── PAGE CONTAINER ── */
+    #app {
+      position: fixed;
+      top: 56px; left: 0; right: 0; bottom: 0;
+      overflow: hidden;
+    }
+
+    .page {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      overflow-y: auto;
+      padding: 4rem 3rem 6rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      transform: translateY(16px);
+    }
+    .page.active {
+      opacity: 1;
+      pointer-events: all;
+      transform: translateY(0);
+    }
+    .page-inner {
+      max-width: 780px;
+      margin: 0 auto;
+    }
+
+    /* ── BOTTOM NAV ── */
+    .page-nav {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      z-index: 200;
+      background: rgba(250,247,242,0.95);
+      backdrop-filter: blur(8px);
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 3rem;
+    }
+    .page-nav-label {
+      font-size: 0.78rem;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .page-nav-btns { display: flex; gap: 0.75rem; }
+    .btn-nav {
+      background: none;
+      border: 1.5px solid var(--border);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 0.85rem;
+      font-weight: 500;
+      padding: 0.5rem 1.2rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-nav:hover { border-color: var(--accent); color: var(--accent); }
+    .btn-nav.primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+    .btn-nav.primary:hover { background: #a8521f; }
+    .btn-nav:disabled { opacity: 0.3; cursor: default; }
+
+    /* ── TYPOGRAPHY ── */
+    .eyebrow {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.9rem;
+    }
+    h1 {
+      font-family: var(--lora);
+      font-size: clamp(2.2rem, 4.5vw, 3.4rem);
+      line-height: 1.15;
+      font-weight: 600;
+      margin-bottom: 1.2rem;
+    }
+    h1 em { font-style: italic; color: var(--accent); }
+    h2 {
+      font-family: var(--lora);
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      line-height: 1.2;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+    }
+    .lead {
+      font-size: 1.05rem;
+      color: var(--muted);
+      line-height: 1.8;
+      max-width: 600px;
+      margin-bottom: 2.5rem;
+    }
+
+    /* ── BUTTONS ── */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 0.75rem 1.6rem;
+      border-radius: 4px;
+      font-family: var(--sans);
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-primary:hover { background: #a8521f; transform: translateY(-1px); }
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: transparent;
+      color: var(--accent);
+      border: 1.5px solid var(--accent);
+      padding: 0.72rem 1.6rem;
+      border-radius: 4px;
+      font-family: var(--sans);
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .btn-ghost:hover { background: var(--accent-lt); }
+
+    /* ── HOME ── */
+    #page-home .page-inner {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: calc(100vh - 120px);
+      padding-top: 2rem;
+    }
+    .home-actions { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 0.5rem; }
+    .home-divider {
+      width: 44px; height: 3px;
+      background: var(--accent);
+      border-radius: 2px;
+      margin: 2.5rem 0 0;
+    }
+
+    /* ── SKILL CARDS ── */
+    .skill-stack { display: flex; flex-direction: column; gap: 1.2rem; }
+
+    .skill-card {
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.6rem 1.8rem;
+      position: relative;
+      overflow: hidden;
+      transition: box-shadow 0.2s;
+    }
+    .skill-card:hover { box-shadow: 0 4px 18px rgba(0,0,0,0.07); }
+    .skill-card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: var(--accent);
+      border-radius: 3px 0 0 3px;
+    }
+    .skill-card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 0.6rem;
+    }
+    .skill-card h3 {
+      font-family: var(--lora);
+      font-size: 1.05rem;
+      font-weight: 600;
+    }
+    .skill-tag {
+      display: inline-block;
+      background: var(--tag-bg);
+      color: var(--accent);
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.55rem;
+      border-radius: 3px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .skill-card .maps-to {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+    .skill-card .maps-to strong { color: var(--ink); font-weight: 500; }
+    .skill-card .note {
+      margin-top: 0.8rem;
+      padding-top: 0.8rem;
+      border-top: 1px dashed var(--border);
+      font-size: 0.84rem;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    /* ── VISION ── */
+    .vision-hero {
+      background: var(--ink);
+      color: #fff;
+      border-radius: 10px;
+      padding: 2.5rem 2.5rem;
+      margin-bottom: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .vision-hero::after {
+      content: '✦';
+      font-size: 12rem;
+      color: var(--accent);
+      opacity: 0.07;
+      position: absolute;
+      right: 1rem;
+      bottom: -2rem;
+      line-height: 1;
+      pointer-events: none;
+    }
+    .vision-hero h3 {
+      font-family: var(--lora);
+      font-size: 1.7rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 0.8rem;
+    }
+    .vision-hero h3 em { color: var(--accent); font-style: italic; }
+    .vision-hero p { color: #c4bbb4; font-size: 0.97rem; line-height: 1.8; max-width: 540px; }
+
+    .unique-box {
+      background: var(--accent-lt);
+      border-radius: 8px;
+      padding: 1.5rem 1.8rem;
+      margin-bottom: 2rem;
+    }
+    .unique-box .label {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+    .unique-box p {
+      font-size: 0.97rem;
+      color: var(--ink);
+      line-height: 1.75;
+    }
+
+    .pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+    .pillar {
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.3rem 1.3rem;
+    }
+    .pillar-icon { font-size: 1.3rem; margin-bottom: 0.6rem; }
+    .pillar h4 { font-family: var(--lora); font-size: 0.95rem; font-weight: 600; margin-bottom: 0.4rem; }
+    .pillar p { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+
+    /* ── IDEAS ── */
+    .ideas-stack { display: flex; flex-direction: column; gap: 1.2rem; }
+    .idea-card {
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.6rem 1.8rem;
+      transition: box-shadow 0.2s;
+    }
+    .idea-card:hover { box-shadow: 0 4px 18px rgba(0,0,0,0.07); }
+    .idea-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    .idea-num {
+      font-family: var(--lora);
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--accent-lt);
+      line-height: 1;
+      flex-shrink: 0;
+    }
+    .idea-card h3 {
+      font-family: var(--lora);
+      font-size: 1.05rem;
+      font-weight: 600;
+    }
+    .idea-problem {
+      font-size: 0.85rem;
+      color: var(--accent);
+      font-style: italic;
+      margin-bottom: 0.9rem;
+    }
+    .idea-bullets {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .idea-bullets li {
+      font-size: 0.9rem;
+      color: var(--ink);
+      line-height: 1.6;
+      padding-left: 1.2rem;
+      position: relative;
+    }
+    .idea-bullets li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-size: 0.8rem;
+    }
+    .ai-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      background: var(--tag-bg);
+      color: var(--accent);
+      font-size: 0.72rem;
+      font-weight: 500;
+      padding: 0.2rem 0.65rem;
+      border-radius: 20px;
+      margin-top: 0.9rem;
+    }
+
+    /* ── FOOTER ── */
+    .footer-note {
+      text-align: center;
+      padding: 3rem 0 1rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+      font-style: italic;
+      border-top: 1px solid var(--border);
+      margin-top: 3rem;
+    }
+    .footer-note strong { color: var(--accent); font-style: normal; }
+
+    @media (max-width: 640px) {
+      nav, .page-nav { padding: 0 1.2rem; }
+      .page { padding: 2rem 1.2rem 5rem; }
+      .pillars { grid-template-columns: 1fr; }
+      .nav-links button { padding: 0.4rem 0.5rem; font-size: 0.72rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP NAV -->
+  <nav>
+    <span class="nav-logo" onclick="goTo(0)">BTC · Events Coordinator</span>
+    <ul class="nav-links">
+      <li><button onclick="goTo(0)" class="active" id="nav-0">Home</button></li>
+      <li><button onclick="goTo(1)" id="nav-1">Why Me</button></li>
+      <li><button onclick="goTo(2)" id="nav-2">Vision</button></li>
+      <li><button onclick="goTo(3)" id="nav-3">Ideas</button></li>
+    </ul>
+  </nav>
+
+  <!-- PAGES -->
+  <div id="app">
+
+    <!-- HOME -->
+    <div class="page active" id="page-home">
+      <div class="page-inner">
+        <p class="eyebrow">Applying for · Events Coordinator · Business in Tech Club · ISB</p>
+        <h1>Hi, I'm <em>[Your Name]</em>.<br>I run things so others<br>can show up.</h1>
+        <p class="lead">Four years of managing complex tech rollouts across hundreds of users taught me one thing: the best events — like the best systems — don't feel managed. They just work. I want to bring that to BTC.</p>
+        <div class="home-actions">
+          <button class="btn-primary" onclick="goTo(1)">See my case →</button>
+          <a href="resume.pdf" download class="btn-ghost">↓ Download Resume</a>
+        </div>
+        <div class="home-divider"></div>
+
+        <footer class="footer-note" style="margin-top:3rem; border-top: none;">
+          <strong>Built this to show, not just tell.</strong><br>
+          Because if I'm applying to own events end to end, the application should feel like one.
+        </footer>
+      </div>
+    </div>
+
+    <!-- PAGE 1: WHY ME -->
+    <div class="page" id="page-why">
+      <div class="page-inner">
+        <p class="eyebrow">Page 01 — Experience</p>
+        <h2>Why should you pick me?</h2>
+        <p class="lead">
+          I've organised events since school — just ask my college fests (pre-COVID, when events were still a thing people attended in person). My corporate years added a layer of structured, high-stakes execution on top of that. Here's how it all maps.
+        </p>
+
+        <div class="skill-stack">
+
+          <div class="skill-card">
+            <div class="skill-card-header">
+              <h3>Project Execution at Scale</h3>
+              <span class="skill-tag">Operations</span>
+            </div>
+            <p class="maps-to">Led the <strong>Windows 11 rollout and Exchange Online migration</strong> across D. E. Shaw India — multi-phase projects with tight timelines, cross-team dependencies, and zero room for a "we'll figure it out on the day" approach.</p>
+            <p class="maps-to">→ Maps to: <strong>End-to-end event ownership</strong> — planning, logistics, AV, venue, and delivery without letting details slip.</p>
+            <p class="note">When your "event" is a 500-person migration with a hard cutover window, club events start to feel manageable.</p>
+          </div>
+
+          <div class="skill-card">
+            <div class="skill-card-header">
+              <h3>Stakeholder Management</h3>
+              <span class="skill-tag">People Skills</span>
+            </div>
+            <p class="maps-to">Worked as the <strong>systems point of contact for an entire department</strong> — fielding requests, managing expectations, coordinating between leadership, vendors, and end users simultaneously.</p>
+            <p class="maps-to">→ Maps to: <strong>Coordinating with CAPD, college authorities, and other clubs</strong> — being the person everyone can reach and actually rely on.</p>
+            <p class="note">If I could keep engineers and executives on the same page at 2am during an outage, I can handle a venue booking email chain.</p>
+          </div>
+
+          <div class="skill-card">
+            <div class="skill-card-header">
+              <h3>Feedback Systems & Iteration</h3>
+              <span class="skill-tag">Process</span>
+            </div>
+            <p class="maps-to">Built and maintained <strong>structured trackers and feedback loops</strong> as the ops POC — capturing what worked, what broke, and making sure the next team didn't start from zero.</p>
+            <p class="maps-to">→ Maps to: <strong>Building a feedback loop for BTC events</strong> — gathering responses and actually acting on them, not filing them away.</p>
+            <p class="note">I've seen what happens when institutional knowledge disappears at a team transition. I've also fixed it.</p>
+          </div>
+
+          <div class="skill-card">
+            <div class="skill-card-header">
+              <h3>Cross-Functional Coordination</h3>
+              <span class="skill-tag">Collaboration</span>
+            </div>
+            <p class="maps-to">Led the <strong>Arcesium disentanglement program</strong> — a multi-month initiative involving legal, infrastructure, operations, and leadership across two organisations. Nothing moved without someone connecting the dots.</p>
+            <p class="maps-to">→ Maps to: <strong>Liaising with Marketing & Comms</strong> and other clubs to ensure BTC events don't just happen in isolation — they land cohesively.</p>
+            <p class="note">Being the person in the middle isn't stressful to me. It's where I do my best work.</p>
+          </div>
+
+          <div class="skill-card">
+            <div class="skill-card-header">
+              <h3>Customer Support & Soft Skills</h3>
+              <span class="skill-tag">People Skills</span>
+            </div>
+            <p class="maps-to">Provided <strong>end-user support across a large, demanding, multi-timezone workforce</strong> — which is really just event management with higher stakes and a ticketing system.</p>
+            <p class="maps-to">→ Maps to: <strong>Managing on-ground requirements</strong> and being the calm, reliable face of BTC when things don't go to plan (because they won't).</p>
+            <p class="note">Four years of "have you tried turning it off and on again" builds a very particular kind of patience. Useful for events.</p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 2: VISION -->
+    <div class="page" id="page-vision">
+      <div class="page-inner">
+        <p class="eyebrow">Page 02 — My Vision</p>
+        <h2>What I'd actually bring<br>to BTC</h2>
+        <p class="lead">
+          Beyond running events well — I want to use this role to build something that didn't exist when I was figuring out my own path into product.
+        </p>
+
+        <div class="vision-hero">
+          <h3><em>Breaking In</em></h3>
+          <p>An initiative to demystify product management for everyone at ISB who doesn't come from a PM or engineering background — and show them that's actually an advantage, not a gap.</p>
+        </div>
+
+        <div class="unique-box">
+          <p class="label">Why I'm the right person to run this</p>
+          <p>
+            I'm not a PM. I'm not an engineer. That's exactly the point. I'll notice the things that PMs and engineers take for granted — the jargon that alienates people, the assumed context that never gets explained, the "unwritten rules" that make the path look harder than it is. My job will be to make those visible, and then dismantle them. BTC doesn't need another PM to talk about PM. It needs someone who's been on the outside — and can build a door.
+          </p>
+        </div>
+
+        <div class="pillars">
+          <div class="pillar">
+            <div class="pillar-icon">🗺️</div>
+            <h4>Make the path visible</h4>
+            <p>Sessions with PMs from non-traditional backgrounds — finance, ops, consulting — showing what the pivot actually looked like, not the polished version.</p>
+          </div>
+          <div class="pillar">
+            <div class="pillar-icon">🛠️</div>
+            <h4>Build real fluency</h4>
+            <p>Hands-on workshops on PRDs, product thinking, and PM interviews — designed for people who've never shipped a feature, not those who already have.</p>
+          </div>
+          <div class="pillar">
+            <div class="pillar-icon">🤝</div>
+            <h4>Create community</h4>
+            <p>A peer group for non-traditional PM aspirants — so nobody feels like they're figuring this out alone in a room full of engineers.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- PAGE 3: IDEAS -->
+    <div class="page" id="page-ideas">
+      <div class="page-inner">
+        <p class="eyebrow">Page 03 — AI-Powered Ideas</p>
+        <h2>Three things I'd build<br>as Events Coordinator</h2>
+        <p class="lead">
+          Each one solves a real BTC problem — and each one leverages AI to do it faster and smarter than a spreadsheet ever could. These aren't pitches. I'm already building them.
+        </p>
+
+        <div class="ideas-stack">
+
+          <div class="idea-card">
+            <div class="idea-header">
+              <span class="idea-num">01</span>
+              <h3>BTC Knowledge Hub</h3>
+            </div>
+            <p class="idea-problem">Problem: every cohort starts from zero. Lessons learned, speaker contacts, what worked — gone at handoff.</p>
+            <ul class="idea-bullets">
+              <li>A searchable repository of all past BTC events — recaps, feedback themes, speaker notes, venue details, and cross-club commitments.</li>
+              <li>AI auto-tags and summarises entries after each event so the log stays current without extra admin effort.</li>
+              <li>Any future EC can ask "what did we do for the last fintech session?" and get an actual answer — not a blank Drive folder.</li>
+            </ul>
+            <span class="ai-badge">🤖 AI-powered tagging & summarisation</span>
+          </div>
+
+          <div class="idea-card">
+            <div class="idea-header">
+              <span class="idea-num">02</span>
+              <h3>Post-Event Intelligence Report</h3>
+            </div>
+            <p class="idea-problem">Problem: feedback forms get filled. Nobody reads them systematically. The next event is planned the same way.</p>
+            <ul class="idea-bullets">
+              <li>After each event, drop in feedback responses and attendance data — AI generates a structured debrief in minutes.</li>
+              <li>Covers what landed, what didn't, sentiment by category (content, logistics, speaker, timing), and a clear "do differently" section.</li>
+              <li>Report goes to the full BTC committee — not just the EC — so improvements are visible and collective.</li>
+            </ul>
+            <span class="ai-badge">🤖 AI-generated debrief after every event</span>
+          </div>
+
+          <div class="idea-card">
+            <div class="idea-header">
+              <span class="idea-num">03</span>
+              <h3>Cross-Club Unified Calendar</h3>
+            </div>
+            <p class="idea-problem">Problem: clubs plan in silos. Clashes happen. High-demand weeks get overloaded. Students miss things they'd have attended.</p>
+            <ul class="idea-bullets">
+              <li>A shared calendar aggregating BTC sessions alongside major club events, exam weeks, and CAPD touchpoints.</li>
+              <li>AI flags scheduling conflicts before they're locked in and suggests better windows based on historical attendance data.</li>
+              <li>Shareable and visible to the full cohort — doubles as a marketing asset for BTC's activity across the year.</li>
+            </ul>
+            <span class="ai-badge">🤖 AI conflict detection & scheduling suggestions</span>
+          </div>
+
+        </div>
+
+        <div class="footer-note">
+          <strong>Built this to show, not just tell.</strong><br>
+          Because if I'm applying to own events end to end, the application should feel like one.
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /app -->
+
+  <!-- BOTTOM NAV -->
+  <div class="page-nav">
+    <span class="page-nav-label" id="page-label">Home · 1 of 4</span>
+    <div class="page-nav-btns">
+      <button class="btn-nav" id="btn-prev" onclick="step(-1)" disabled>← Back</button>
+      <button class="btn-nav primary" id="btn-next" onclick="step(1)">Next →</button>
+    </div>
+  </div>
+
+  <script>
+    const pages = ['page-home', 'page-why', 'page-vision', 'page-ideas'];
+    const labels = ['Home', 'Why Me', 'Vision', 'Ideas'];
+    let current = 0;
+
+    function goTo(idx) {
+      document.getElementById(pages[current]).classList.remove('active');
+      document.getElementById('nav-' + current).classList.remove('active');
+      current = idx;
+      const el = document.getElementById(pages[current]);
+      el.classList.add('active');
+      el.scrollTop = 0;
+      document.getElementById('nav-' + current).classList.add('active');
+      document.getElementById('page-label').textContent = labels[current] + ' · ' + (current + 1) + ' of ' + pages.length;
+      document.getElementById('btn-prev').disabled = current === 0;
+      document.getElementById('btn-next').disabled = current === pages.length - 1;
+      document.getElementById('btn-next').textContent = current === pages.length - 1 ? '✓ Done' : 'Next →';
+    }
+
+    function step(dir) {
+      const next = current + dir;
+      if (next >= 0 && next < pages.length) goTo(next);
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') step(1);
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') step(-1);
+    });
+  </script>
+
+</body>
+</html>
