@@ -249,16 +249,16 @@
     }
     .prop-box p { color: #e8d5c4; font-size: 0.95rem; line-height: 1.8; max-width: 540px; }
 
-    .tracks-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.5rem; }
-    .track-card {
+    .pillars-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1.5rem; }
+    .pillar-card {
       background: var(--paper);
       border: 1px solid var(--border);
       border-radius: 8px;
       padding: 1.3rem 1.4rem;
     }
-    .track-card .track-icon { font-size: 1.2rem; margin-bottom: 0.5rem; }
-    .track-card h4 { font-family: var(--lora); font-size: 0.95rem; font-weight: 600; margin-bottom: 0.4rem; }
-    .track-card p { font-size: 0.84rem; color: var(--muted); line-height: 1.6; }
+    .pillar-card .pillar-icon { font-size: 1.2rem; margin-bottom: 0.5rem; }
+    .pillar-card h4 { font-family: var(--lora); font-size: 0.95rem; font-weight: 600; margin-bottom: 0.4rem; }
+    .pillar-card p { font-size: 0.84rem; color: var(--muted); line-height: 1.6; }
 
     /* ─────────── EVENTS ─────────── */
     .events-tabs { display: flex; gap: 0.5rem; margin-bottom: 1.8rem; }
@@ -502,8 +502,17 @@
       font-size: 0.88rem; font-weight: 500; color: var(--ink); margin-bottom: 0.2rem;
     }
     .upcoming-item .ui-type {
-      font-size: 0.75rem; color: var(--muted);
+      font-size: 0.75rem; color: var(--muted); margin-bottom: 0.5rem;
     }
+    .btn-outlook {
+      display: inline-flex; align-items: center; gap: 0.3rem;
+      background: none; border: 1px solid var(--border);
+      color: var(--muted); font-family: var(--sans);
+      font-size: 0.7rem; font-weight: 500;
+      padding: 0.2rem 0.6rem; border-radius: 3px;
+      cursor: pointer; transition: all 0.2s; text-decoration: none;
+    }
+    .btn-outlook:hover { border-color: #0078d4; color: #0078d4; background: #e8f0fe; }
 
     /* ─────────── ALUMNI ─────────── */
     .alumni-filter { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.8rem; }
@@ -544,6 +553,54 @@
       border-bottom: 1px solid var(--accent-lt); cursor: pointer;
     }
 
+    /* ─────────── COMMUNITY ─────────── */
+    .community-search {
+      display: flex; gap: 0.75rem; margin-bottom: 1.5rem; align-items: center;
+    }
+    .community-search input {
+      flex: 1; border: 1.5px solid var(--border); border-radius: 6px;
+      padding: 0.55rem 1rem; font-family: var(--sans); font-size: 0.9rem;
+      background: var(--paper); color: var(--ink); transition: border-color 0.2s;
+    }
+    .community-search input:focus { outline: none; border-color: var(--accent); }
+    .community-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;
+    }
+    .member-card {
+      background: var(--paper); border: 1px solid var(--border);
+      border-radius: 8px; padding: 1.2rem 1.4rem;
+      display: flex; gap: 1rem; align-items: flex-start;
+      transition: box-shadow 0.2s;
+    }
+    .member-card:hover { box-shadow: 0 4px 18px rgba(0,0,0,0.07); }
+    .member-avatar {
+      width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+      background: var(--accent-lt); display: flex; align-items: center;
+      justify-content: center; font-family: var(--lora);
+      font-size: 0.95rem; font-weight: 600; color: var(--accent);
+    }
+    .member-info { flex: 1; min-width: 0; }
+    .member-info h4 { font-family: var(--lora); font-size: 0.92rem; font-weight: 600; margin-bottom: 0.15rem; }
+    .member-info .member-role { font-size: 0.8rem; color: var(--accent2); margin-bottom: 0.1rem; }
+    .member-info .member-prog { font-size: 0.78rem; color: var(--muted); margin-bottom: 0.5rem; }
+    .member-contact {
+      display: flex; gap: 0.5rem; flex-wrap: wrap;
+    }
+    .member-contact a {
+      font-size: 0.72rem; color: var(--accent); text-decoration: none;
+      border: 1px solid var(--accent-lt); border-radius: 3px;
+      padding: 0.15rem 0.5rem; transition: all 0.2s;
+    }
+    .member-contact a:hover { background: var(--accent-lt); }
+    .member-expertise {
+      display: flex; gap: 0.35rem; flex-wrap: wrap; margin-bottom: 0.5rem;
+    }
+    .member-tag {
+      background: var(--tag-bg); color: var(--accent2);
+      font-size: 0.65rem; font-weight: 500; letter-spacing: 0.04em;
+      text-transform: uppercase; padding: 0.12rem 0.45rem; border-radius: 3px;
+    }
+
     /* ─────────── FOOTER ─────────── */
     .footer-note {
       text-align: center; padding: 3rem 0 1rem;
@@ -556,7 +613,7 @@
     @media (max-width: 760px) {
       nav, .page-nav { padding: 0 1.2rem; }
       .page { padding: 2rem 1.2rem 5rem; }
-      .tracks-row, .resources-grid, .alumni-grid { grid-template-columns: 1fr; }
+      .pillars-row, .resources-grid, .alumni-grid, .community-grid { grid-template-columns: 1fr; }
       .cal-layout { grid-template-columns: 1fr; }
       .form-row { grid-template-columns: 1fr; }
       .nav-links button { padding: 0.4rem 0.45rem; font-size: 0.7rem; }
@@ -571,9 +628,10 @@
     <ul class="nav-links">
       <li><button onclick="goTo(0)" class="active" id="nav-0">Home</button></li>
       <li><button onclick="goTo(1)" id="nav-1">Events</button></li>
-      <li><button onclick="goTo(2)" id="nav-2">Resources</button></li>
-      <li><button onclick="goTo(3)" id="nav-3">Calendar</button></li>
-      <li><button onclick="goTo(4)" id="nav-4">Alumni</button></li>
+      <li><button onclick="goTo(2)" id="nav-2">Calendar</button></li>
+      <li><button onclick="goTo(3)" id="nav-3">Alumni</button></li>
+      <li><button onclick="goTo(4)" id="nav-4">Community</button></li>
+      <li><button onclick="goTo(5)" id="nav-5">Resources</button></li>
     </ul>
   </nav>
 
@@ -584,37 +642,42 @@
       <div class="page-inner">
         <p class="eyebrow">Applying for · L&D Coordinator · Women in Business · ISB</p>
         <h1>Learning that gives<br>every woman <em>an edge</em><br>in business.</h1>
-        <p class="lead">The most underestimated skill gap for women in business today isn't leadership or networking — it's tech fluency. I want WIB's L&D to close that gap, one session at a time.</p>
+        <p class="lead">WIB L&D should build the whole woman — sharp in the boardroom, confident with numbers, fluent in tech, and powerful in every room she walks into.</p>
         <div class="home-actions">
           <button class="btn-primary" onclick="goTo(1)">See the vision →</button>
-          <button class="btn-ghost" onclick="goTo(2)">Explore Resources</button>
+          <button class="btn-ghost" onclick="goTo(5)">Explore Resources</button>
         </div>
         <div class="home-divider"></div>
 
         <div style="margin-top: 2.5rem;">
           <div class="prop-box">
             <p class="prop-label">My unique proposition</p>
-            <h3>Tech isn't a domain. It's a language — and every woman in business needs to speak it.</h3>
-            <p>From reading a dashboard to understanding AI tools, negotiating SaaS contracts, or decoding a product roadmap — tech literacy is the new business literacy. I'll build an L&D program that makes this accessible, practical, and relevant to wherever our members are headed.</p>
+            <h3>Skills across the spectrum — with tech as the differentiator nobody else is bringing.</h3>
+            <p>Great L&D builds the full toolkit: negotiation, leadership, financial fluency, communication, strategic thinking. That's table stakes. What I bring that most others don't is tech fluency — making AI tools, data literacy, and product thinking accessible to every member, regardless of background. In 2026, that's the edge that compounds everything else.</p>
           </div>
 
-          <div class="tracks-row">
-            <div class="track-card">
-              <div class="track-icon">🏢</div>
-              <h4>Corporate Navigation Track</h4>
-              <p>Workshops on thriving in corporate environments — from decoding org politics to owning your career trajectory with data and confidence.</p>
+          <div class="pillars-row">
+            <div class="pillar-card">
+              <div class="pillar-icon">💼</div>
+              <h4>Professional Skills</h4>
+              <p>Negotiation, stakeholder management, communication, and the unwritten rules of navigating organisations with confidence.</p>
             </div>
-            <div class="track-card">
-              <div class="track-icon">🚀</div>
-              <h4>Incubation Track</h4>
-              <p>Structured sessions to help members ideate and launch real business ideas — from problem identification to lean validation and pitching.</p>
+            <div class="pillar-card">
+              <div class="pillar-icon">📊</div>
+              <h4>Business Fundamentals</h4>
+              <p>Finance for non-finance leaders, data storytelling, strategy frameworks, and thinking like a founder — even inside a corporation.</p>
+            </div>
+            <div class="pillar-card">
+              <div class="pillar-icon">⚡</div>
+              <h4>Tech Fluency</h4>
+              <p>AI tools, reading a tech roadmap, understanding product cycles, and using data — without needing an engineering background.</p>
             </div>
           </div>
         </div>
 
         <div class="footer-note" style="margin-top:2.5rem; border-top: none;">
           <strong>This page is the proof of concept.</strong><br>
-          Every tab you see — Events, Resources, Calendar, Alumni — is the L&D system I'd build for WIB.
+          Every tab you see — Events, Calendar, Alumni, Community, Resources — is the L&D system I'd build for WIB.
         </div>
       </div>
     </div>
@@ -661,8 +724,8 @@
                 <div class="form-field"><label>Programme</label>
                   <select><option>PGP</option><option>PGPpro</option><option>MFAB</option><option>Other</option></select>
                 </div>
-                <div class="form-field"><label>Track Interest</label>
-                  <select><option>Corporate Navigation</option><option>Incubation</option><option>Both</option></select>
+                <div class="form-field"><label>Area of Interest</label>
+                  <select><option>Tech &amp; AI</option><option>Finance &amp; Data</option><option>Leadership</option><option>Entrepreneurship</option></select>
                 </div>
               </div>
               <div class="form-actions">
@@ -700,8 +763,8 @@
                 <div class="form-field"><label>Programme</label>
                   <select><option>PGP</option><option>PGPpro</option><option>MFAB</option><option>Other</option></select>
                 </div>
-                <div class="form-field"><label>Track Interest</label>
-                  <select><option>Corporate Navigation</option><option>Incubation</option><option>Both</option></select>
+                <div class="form-field"><label>Area of Interest</label>
+                  <select><option>Tech &amp; AI</option><option>Finance &amp; Data</option><option>Leadership</option><option>Entrepreneurship</option></select>
                 </div>
               </div>
               <div class="form-actions">
@@ -724,7 +787,7 @@
               <span>📍 LRC 2, ISB</span>
               <span>🎙 Ananya Sharma, Co-Founder · Sprinklr</span>
             </div>
-            <p class="event-desc">Part of the Incubation Track — an interactive workshop on lean validation methods, customer discovery interviews, and building your first hypothesis. Kickstart one of three business ideas you'll develop this year.</p>
+            <p class="event-desc">An interactive workshop on lean validation methods, customer discovery interviews, and building your first hypothesis. Kickstart your business idea with a framework you can actually use.</p>
             <div class="event-actions">
               <button class="btn-register" onclick="toggleReg('reg3')">Register Now</button>
               <span class="ev-badge open" style="align-self:center;">12 seats left</span>
@@ -739,8 +802,8 @@
                 <div class="form-field"><label>Programme</label>
                   <select><option>PGP</option><option>PGPpro</option><option>MFAB</option><option>Other</option></select>
                 </div>
-                <div class="form-field"><label>Track Interest</label>
-                  <select><option>Corporate Navigation</option><option>Incubation</option><option>Both</option></select>
+                <div class="form-field"><label>Area of Interest</label>
+                  <select><option>Tech &amp; AI</option><option>Finance &amp; Data</option><option>Leadership</option><option>Entrepreneurship</option></select>
                 </div>
               </div>
               <div class="form-actions">
@@ -821,152 +884,10 @@
       </div>
     </div>
 
-    <!-- ═══ PAGE 2: RESOURCES ═══ -->
-    <div class="page" id="page-resources">
-      <div class="page-inner">
-        <p class="eyebrow">Page 02 — Learning Resource Centre</p>
-        <h2>Your Knowledge<br>Toolkit</h2>
-        <p class="lead">Curated resources across hard skills, soft skills, and both tracks. Filter by what you need right now.</p>
-
-        <div class="filter-row">
-          <button class="filter-chip active" onclick="filterRes('all', this)">All</button>
-          <button class="filter-chip" onclick="filterRes('hard', this)">Hard Skills</button>
-          <button class="filter-chip" onclick="filterRes('soft', this)">Soft Skills</button>
-          <button class="filter-chip" onclick="filterRes('corp', this)">Corporate Track</button>
-          <button class="filter-chip" onclick="filterRes('incubation', this)">Incubation Track</button>
-          <button class="filter-chip" onclick="filterRes('tech', this)">Tech Literacy</button>
-        </div>
-
-        <div class="resources-grid" id="res-grid">
-
-          <div class="res-card" data-cats="hard tech">
-            <div class="res-card-top">
-              <div>
-                <span class="res-type toolkit">Toolkit</span>
-              </div>
-            </div>
-            <h4>The Business Woman's AI Toolkit</h4>
-            <p>A curated guide to 12 AI tools with use-cases specific to business roles — strategy, marketing, ops, and finance. No technical background required.</p>
-            <div class="res-tags">
-              <span class="res-tag">Tech Literacy</span>
-              <span class="res-tag">Hard Skills</span>
-              <span class="res-tag">AI</span>
-            </div>
-          </div>
-
-          <div class="res-card" data-cats="soft corp">
-            <div class="res-card-top">
-              <div>
-                <span class="res-type workshop">Workshop Recording</span>
-              </div>
-            </div>
-            <h4>Negotiation Lab — Session Recording</h4>
-            <p>Full recording of the May 2026 negotiation workshop with Dr. Kavitha Rao, including the role-play debrief and Q&amp;A.</p>
-            <div class="res-tags">
-              <span class="res-tag">Soft Skills</span>
-              <span class="res-tag">Corporate Track</span>
-              <span class="res-tag">Negotiation</span>
-            </div>
-          </div>
-
-          <div class="res-card" data-cats="hard tech corp">
-            <div class="res-card-top">
-              <div>
-                <span class="res-type article">Article</span>
-              </div>
-            </div>
-            <h4>How to Read a Tech Roadmap (Without Being Technical)</h4>
-            <p>A practical guide to understanding engineering timelines, sprint terminology, and how to ask the right questions when managing a technical team.</p>
-            <div class="res-tags">
-              <span class="res-tag">Tech Literacy</span>
-              <span class="res-tag">Hard Skills</span>
-              <span class="res-tag">Management</span>
-            </div>
-          </div>
-
-          <div class="res-card" data-cats="incubation hard">
-            <div class="res-card-top">
-              <div>
-                <span class="res-type template">Template</span>
-              </div>
-            </div>
-            <h4>Idea Validation Canvas</h4>
-            <p>A one-page template for mapping your business idea — problem, customer segment, unique value proposition, and first validation steps.</p>
-            <div class="res-tags">
-              <span class="res-tag">Incubation Track</span>
-              <span class="res-tag">Template</span>
-              <span class="res-tag">Entrepreneurship</span>
-            </div>
-          </div>
-
-          <div class="res-card" data-cats="soft corp">
-            <div class="res-card-top">
-              <div>
-                <span class="res-type article">Article</span>
-              </div>
-            </div>
-            <h4>The Unwritten Rules of Corporate Culture</h4>
-            <p>What nobody tells you when you join a large organisation — stakeholder management, visibility, managing up, and knowing which battles to pick.</p>
-            <div class="res-tags">
-              <span class="res-tag">Soft Skills</span>
-              <span class="res-tag">Corporate Track</span>
-              <span class="res-tag">Culture</span>
-            </div>
-          </div>
-
-          <div class="res-card" data-cats="hard tech incubation">
-            <div class="res-card-top">
-              <div>
-                <span class="res-type toolkit">Toolkit</span>
-              </div>
-            </div>
-            <h4>Data Storytelling for Business Presentations</h4>
-            <p>How to turn raw data into compelling narratives — chart selection, decluttering, and structuring a data-driven argument for any audience.</p>
-            <div class="res-tags">
-              <span class="res-tag">Tech Literacy</span>
-              <span class="res-tag">Hard Skills</span>
-              <span class="res-tag">Presentations</span>
-            </div>
-          </div>
-
-          <div class="res-card" data-cats="incubation soft">
-            <div class="res-card-top">
-              <div>
-                <span class="res-type workshop">Workshop Recording</span>
-              </div>
-            </div>
-            <h4>Customer Discovery: Asking the Right Questions</h4>
-            <p>Recording of a 90-minute deep dive on conducting customer interviews — how to avoid leading questions and synthesise insights into validated assumptions.</p>
-            <div class="res-tags">
-              <span class="res-tag">Incubation Track</span>
-              <span class="res-tag">Soft Skills</span>
-              <span class="res-tag">Research</span>
-            </div>
-          </div>
-
-          <div class="res-card" data-cats="hard corp">
-            <div class="res-card-top">
-              <div>
-                <span class="res-type template">Template</span>
-              </div>
-            </div>
-            <h4>90-Day Onboarding Plan Template</h4>
-            <p>A structured framework for your first three months at any new organisation — goal-setting, relationship mapping, and quick-win identification.</p>
-            <div class="res-tags">
-              <span class="res-tag">Corporate Track</span>
-              <span class="res-tag">Template</span>
-              <span class="res-tag">Career Planning</span>
-            </div>
-          </div>
-
-        </div><!-- /resources-grid -->
-      </div>
-    </div>
-
-    <!-- ═══ PAGE 3: CALENDAR ═══ -->
+    <!-- ═══ PAGE 2: CALENDAR ═══ -->
     <div class="page" id="page-calendar">
       <div class="page-inner">
-        <p class="eyebrow">Page 03 — Calendar</p>
+        <p class="eyebrow">Page 02 — Calendar</p>
         <h2>What's Coming Up</h2>
         <p class="lead">A live view of all WIB L&D sessions. Plan your month around learning.</p>
 
@@ -1034,40 +955,51 @@
 
           <div class="upcoming-list">
             <h4>Next Up</h4>
+
             <div class="upcoming-item">
               <div class="ui-date">22 Jun · 4:00 PM</div>
               <div class="ui-title">AI Tools Every Business Woman Needs</div>
               <div class="ui-type">Workshop · Hard Skills · Tech Literacy</div>
+              <button class="btn-outlook" onclick="addToOutlook('AI Tools Every Business Woman Needs','20260622T160000','20260622T180000','Auditorium B, ISB')">📅 Add to Outlook</button>
             </div>
+
             <div class="upcoming-item">
               <div class="ui-date">27 Jun · 12:30 PM</div>
               <div class="ui-title">L&D Office Hours</div>
               <div class="ui-type">Drop-in · Career Planning · Open to All</div>
+              <button class="btn-outlook" onclick="addToOutlook('WIB L&amp;D Office Hours','20260627T123000','20260627T133000','ISB Campus')">📅 Add to Outlook</button>
             </div>
+
             <div class="upcoming-item">
               <div class="ui-date">3 Jul · 5:00 PM</div>
               <div class="ui-title">Alumni Talk: Breaking into VC</div>
               <div class="ui-type">Talk · Incubation Track</div>
+              <button class="btn-outlook" onclick="addToOutlook('WIB Alumni Talk: Breaking into VC','20260703T170000','20260703T183000','ISB Campus')">📅 Add to Outlook</button>
             </div>
+
             <div class="upcoming-item">
               <div class="ui-date">5 Jul · 5:30 PM</div>
               <div class="ui-title">Reading the Room: Finance for Leaders</div>
               <div class="ui-type">Workshop · Hard Skills · Corporate Track</div>
+              <button class="btn-outlook" onclick="addToOutlook('Reading the Room: Finance for Leaders','20260705T173000','20260705T193000','AC3 – 105, ISB')">📅 Add to Outlook</button>
             </div>
+
             <div class="upcoming-item">
               <div class="ui-date">19 Jul · 3:00 PM</div>
               <div class="ui-title">Founder's Lens: Validate in 30 Days</div>
-              <div class="ui-type">Workshop · Incubation Track</div>
+              <div class="ui-type">Workshop · Entrepreneurship</div>
+              <button class="btn-outlook" onclick="addToOutlook('Founder\'s Lens: Validate in 30 Days','20260719T150000','20260719T173000','LRC 2, ISB')">📅 Add to Outlook</button>
             </div>
+
           </div>
         </div>
       </div>
     </div>
 
-    <!-- ═══ PAGE 4: ALUMNI ═══ -->
+    <!-- ═══ PAGE 3: ALUMNI ═══ -->
     <div class="page" id="page-alumni">
       <div class="page-inner">
-        <p class="eyebrow">Page 04 — Alumni Network</p>
+        <p class="eyebrow">Page 03 — Alumni Network</p>
         <h2>Women Who've<br>Been There</h2>
         <p class="lead">Connect with WIB alumni across industries. They've navigated the same crossroads — and they're here to help.</p>
 
@@ -1172,11 +1104,317 @@
       </div>
     </div>
 
+    <!-- ═══ PAGE 4: COMMUNITY ═══ -->
+    <div class="page" id="page-community">
+      <div class="page-inner">
+        <p class="eyebrow">Page 04 — Community</p>
+        <h2>Your WIB<br>Community</h2>
+        <p class="lead">Find and connect with fellow members. Whether you need a study partner, a sounding board, or someone with a specific skill set — your community is right here.</p>
+
+        <div class="community-search">
+          <input type="text" id="member-search" placeholder="Search by name, interest, or expertise…" oninput="filterMembers(this.value)" />
+        </div>
+
+        <div class="community-grid" id="community-grid">
+
+          <div class="member-card" data-search="uditi jeloka l&d coordinator tech ai product strategy pgp">
+            <div class="member-avatar">UJ</div>
+            <div class="member-info">
+              <h4>Uditi Jeloka</h4>
+              <div class="member-role">L&D Coordinator (Candidate)</div>
+              <div class="member-prog">PGP · ISB Hyderabad</div>
+              <div class="member-expertise">
+                <span class="member-tag">Tech &amp; AI</span>
+                <span class="member-tag">L&D</span>
+                <span class="member-tag">Strategy</span>
+              </div>
+              <div class="member-contact">
+                <a href="mailto:uditi.jeloka@isb.edu">Email</a>
+                <a href="#">LinkedIn</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="member-card" data-search="priya sharma finance consulting strategy pgp">
+            <div class="member-avatar">PS</div>
+            <div class="member-info">
+              <h4>Priya Sharma</h4>
+              <div class="member-role">Vice President, WIB</div>
+              <div class="member-prog">PGP · ISB Hyderabad</div>
+              <div class="member-expertise">
+                <span class="member-tag">Finance</span>
+                <span class="member-tag">Consulting</span>
+                <span class="member-tag">Leadership</span>
+              </div>
+              <div class="member-contact">
+                <a href="mailto:priya.sharma@isb.edu">Email</a>
+                <a href="#">LinkedIn</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="member-card" data-search="kavya reddy marketing brand events pgppro">
+            <div class="member-avatar">KR</div>
+            <div class="member-info">
+              <h4>Kavya Reddy</h4>
+              <div class="member-role">Events Head, WIB</div>
+              <div class="member-prog">PGPpro · ISB Hyderabad</div>
+              <div class="member-expertise">
+                <span class="member-tag">Marketing</span>
+                <span class="member-tag">Brand</span>
+                <span class="member-tag">Events</span>
+              </div>
+              <div class="member-contact">
+                <a href="mailto:kavya.reddy@isb.edu">Email</a>
+                <a href="#">LinkedIn</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="member-card" data-search="anisha mehta entrepreneurship startups ops pgp">
+            <div class="member-avatar">AM</div>
+            <div class="member-info">
+              <h4>Anisha Mehta</h4>
+              <div class="member-role">Member, WIB</div>
+              <div class="member-prog">PGP · ISB Hyderabad</div>
+              <div class="member-expertise">
+                <span class="member-tag">Entrepreneurship</span>
+                <span class="member-tag">Operations</span>
+                <span class="member-tag">Startups</span>
+              </div>
+              <div class="member-contact">
+                <a href="mailto:anisha.mehta@isb.edu">Email</a>
+                <a href="#">LinkedIn</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="member-card" data-search="riya patel tech product management data pgp">
+            <div class="member-avatar">RP</div>
+            <div class="member-info">
+              <h4>Riya Patel</h4>
+              <div class="member-role">Member, WIB</div>
+              <div class="member-prog">PGP · ISB Hyderabad</div>
+              <div class="member-expertise">
+                <span class="member-tag">Product</span>
+                <span class="member-tag">Data</span>
+                <span class="member-tag">Tech</span>
+              </div>
+              <div class="member-contact">
+                <a href="mailto:riya.patel@isb.edu">Email</a>
+                <a href="#">LinkedIn</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="member-card" data-search="sanya gupta finance ib investment banking pgp">
+            <div class="member-avatar">SG</div>
+            <div class="member-info">
+              <h4>Sanya Gupta</h4>
+              <div class="member-role">Treasurer, WIB</div>
+              <div class="member-prog">PGP · ISB Hyderabad</div>
+              <div class="member-expertise">
+                <span class="member-tag">Finance</span>
+                <span class="member-tag">Investment Banking</span>
+              </div>
+              <div class="member-contact">
+                <a href="mailto:sanya.gupta@isb.edu">Email</a>
+                <a href="#">LinkedIn</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="member-card" data-search="tanvi nair sustainability esg consulting mfab">
+            <div class="member-avatar">TN</div>
+            <div class="member-info">
+              <h4>Tanvi Nair</h4>
+              <div class="member-role">Member, WIB</div>
+              <div class="member-prog">MFAB · ISB Hyderabad</div>
+              <div class="member-expertise">
+                <span class="member-tag">Sustainability</span>
+                <span class="member-tag">ESG</span>
+                <span class="member-tag">Consulting</span>
+              </div>
+              <div class="member-contact">
+                <a href="mailto:tanvi.nair@isb.edu">Email</a>
+                <a href="#">LinkedIn</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="member-card" data-search="divya iyer healthcare strategy operations pgppro">
+            <div class="member-avatar">DI</div>
+            <div class="member-info">
+              <h4>Divya Iyer</h4>
+              <div class="member-role">Member, WIB</div>
+              <div class="member-prog">PGPpro · ISB Hyderabad</div>
+              <div class="member-expertise">
+                <span class="member-tag">Healthcare</span>
+                <span class="member-tag">Strategy</span>
+                <span class="member-tag">Operations</span>
+              </div>
+              <div class="member-contact">
+                <a href="mailto:divya.iyer@isb.edu">Email</a>
+                <a href="#">LinkedIn</a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <p style="font-size:0.8rem; color:var(--muted); margin-top:1.5rem; font-style:italic;">
+          Member profiles are placeholders — update with real club member details before publishing.
+        </p>
+      </div>
+    </div>
+
+    <!-- ═══ PAGE 5: RESOURCES ═══ -->
+    <div class="page" id="page-resources">
+      <div class="page-inner">
+        <p class="eyebrow">Page 05 — Learning Resource Centre</p>
+        <h2>Your Knowledge<br>Toolkit</h2>
+        <p class="lead">Curated resources across hard skills, soft skills, and tech fluency. Filter by what you need right now.</p>
+
+        <div class="filter-row">
+          <button class="filter-chip active" onclick="filterRes('all', this)">All</button>
+          <button class="filter-chip" onclick="filterRes('hard', this)">Hard Skills</button>
+          <button class="filter-chip" onclick="filterRes('soft', this)">Soft Skills</button>
+          <button class="filter-chip" onclick="filterRes('tech', this)">Tech Literacy</button>
+          <button class="filter-chip" onclick="filterRes('leadership', this)">Leadership</button>
+          <button class="filter-chip" onclick="filterRes('entrepreneurship', this)">Entrepreneurship</button>
+        </div>
+
+        <div class="resources-grid" id="res-grid">
+
+          <div class="res-card" data-cats="hard tech">
+            <div class="res-card-top">
+              <div>
+                <span class="res-type toolkit">Toolkit</span>
+              </div>
+            </div>
+            <h4>The Business Woman's AI Toolkit</h4>
+            <p>A curated guide to 12 AI tools with use-cases specific to business roles — strategy, marketing, ops, and finance. No technical background required.</p>
+            <div class="res-tags">
+              <span class="res-tag">Tech Literacy</span>
+              <span class="res-tag">Hard Skills</span>
+              <span class="res-tag">AI</span>
+            </div>
+          </div>
+
+          <div class="res-card" data-cats="soft leadership">
+            <div class="res-card-top">
+              <div>
+                <span class="res-type workshop">Workshop Recording</span>
+              </div>
+            </div>
+            <h4>Negotiation Lab — Session Recording</h4>
+            <p>Full recording of the May 2026 negotiation workshop with Dr. Kavitha Rao, including the role-play debrief and Q&amp;A.</p>
+            <div class="res-tags">
+              <span class="res-tag">Soft Skills</span>
+              <span class="res-tag">Leadership</span>
+              <span class="res-tag">Negotiation</span>
+            </div>
+          </div>
+
+          <div class="res-card" data-cats="hard tech">
+            <div class="res-card-top">
+              <div>
+                <span class="res-type article">Article</span>
+              </div>
+            </div>
+            <h4>How to Read a Tech Roadmap (Without Being Technical)</h4>
+            <p>A practical guide to understanding engineering timelines, sprint terminology, and how to ask the right questions when managing a technical team.</p>
+            <div class="res-tags">
+              <span class="res-tag">Tech Literacy</span>
+              <span class="res-tag">Hard Skills</span>
+              <span class="res-tag">Management</span>
+            </div>
+          </div>
+
+          <div class="res-card" data-cats="entrepreneurship hard">
+            <div class="res-card-top">
+              <div>
+                <span class="res-type template">Template</span>
+              </div>
+            </div>
+            <h4>Idea Validation Canvas</h4>
+            <p>A one-page template for mapping your business idea — problem, customer segment, unique value proposition, and first validation steps.</p>
+            <div class="res-tags">
+              <span class="res-tag">Entrepreneurship</span>
+              <span class="res-tag">Template</span>
+              <span class="res-tag">Strategy</span>
+            </div>
+          </div>
+
+          <div class="res-card" data-cats="soft leadership">
+            <div class="res-card-top">
+              <div>
+                <span class="res-type article">Article</span>
+              </div>
+            </div>
+            <h4>The Unwritten Rules of Corporate Culture</h4>
+            <p>What nobody tells you when you join a large organisation — stakeholder management, visibility, managing up, and knowing which battles to pick.</p>
+            <div class="res-tags">
+              <span class="res-tag">Soft Skills</span>
+              <span class="res-tag">Leadership</span>
+              <span class="res-tag">Culture</span>
+            </div>
+          </div>
+
+          <div class="res-card" data-cats="hard tech entrepreneurship">
+            <div class="res-card-top">
+              <div>
+                <span class="res-type toolkit">Toolkit</span>
+              </div>
+            </div>
+            <h4>Data Storytelling for Business Presentations</h4>
+            <p>How to turn raw data into compelling narratives — chart selection, decluttering, and structuring a data-driven argument for any audience.</p>
+            <div class="res-tags">
+              <span class="res-tag">Tech Literacy</span>
+              <span class="res-tag">Hard Skills</span>
+              <span class="res-tag">Presentations</span>
+            </div>
+          </div>
+
+          <div class="res-card" data-cats="entrepreneurship soft">
+            <div class="res-card-top">
+              <div>
+                <span class="res-type workshop">Workshop Recording</span>
+              </div>
+            </div>
+            <h4>Customer Discovery: Asking the Right Questions</h4>
+            <p>Recording of a 90-minute deep dive on conducting customer interviews — how to avoid leading questions and synthesise insights into validated assumptions.</p>
+            <div class="res-tags">
+              <span class="res-tag">Entrepreneurship</span>
+              <span class="res-tag">Soft Skills</span>
+              <span class="res-tag">Research</span>
+            </div>
+          </div>
+
+          <div class="res-card" data-cats="hard leadership">
+            <div class="res-card-top">
+              <div>
+                <span class="res-type template">Template</span>
+              </div>
+            </div>
+            <h4>90-Day Onboarding Plan Template</h4>
+            <p>A structured framework for your first three months at any new organisation — goal-setting, relationship mapping, and quick-win identification.</p>
+            <div class="res-tags">
+              <span class="res-tag">Leadership</span>
+              <span class="res-tag">Template</span>
+              <span class="res-tag">Career Planning</span>
+            </div>
+          </div>
+
+        </div><!-- /resources-grid -->
+      </div>
+    </div>
+
   </div><!-- /app -->
 
   <!-- BOTTOM NAV -->
   <div class="page-nav">
-    <span class="page-nav-label" id="page-label">Home · 1 of 5</span>
+    <span class="page-nav-label" id="page-label">Home · 1 of 6</span>
     <div class="page-nav-btns">
       <button class="btn-nav" id="btn-prev" onclick="step(-1)" disabled>← Back</button>
       <button class="btn-nav primary" id="btn-next" onclick="step(1)">Next →</button>
@@ -1184,8 +1422,8 @@
   </div>
 
   <script>
-    const pages  = ['page-home', 'page-events', 'page-resources', 'page-calendar', 'page-alumni'];
-    const labels = ['Home', 'Events', 'Resources', 'Calendar', 'Alumni'];
+    const pages  = ['page-home', 'page-events', 'page-calendar', 'page-alumni', 'page-community', 'page-resources'];
+    const labels = ['Home', 'Events', 'Calendar', 'Alumni', 'Community', 'Resources'];
     let current  = 0;
 
     function goTo(idx) {
@@ -1257,6 +1495,46 @@
         const c = card.dataset.cat || '';
         card.style.display = (cat === 'all' || c.includes(cat)) ? 'block' : 'none';
       });
+    }
+
+    /* Community search */
+    function filterMembers(query) {
+      const q = query.toLowerCase();
+      document.querySelectorAll('#community-grid .member-card').forEach(card => {
+        const text = card.dataset.search || '';
+        card.style.display = (!q || text.includes(q)) ? 'flex' : 'none';
+      });
+    }
+
+    /* Add to Outlook (.ics download) */
+    function addToOutlook(title, start, end, location) {
+      const uid = 'wib-' + start + '@isb.edu';
+      const now = new Date().toISOString().replace(/[-:.]/g, '').slice(0, 15) + 'Z';
+      const ics = [
+        'BEGIN:VCALENDAR',
+        'VERSION:2.0',
+        'PRODID:-//WIB ISB//L&D//EN',
+        'BEGIN:VEVENT',
+        'UID:' + uid,
+        'DTSTAMP:' + now,
+        'DTSTART:' + start,
+        'DTEND:' + end,
+        'SUMMARY:' + title,
+        'LOCATION:' + location,
+        'DESCRIPTION:WIB L&D Session — Women in Business\\, ISB',
+        'END:VEVENT',
+        'END:VCALENDAR'
+      ].join('\r\n');
+
+      const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+      const url  = URL.createObjectURL(blob);
+      const a    = document.createElement('a');
+      a.href     = url;
+      a.download = title.replace(/[^a-z0-9]/gi, '_') + '.ics';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
     }
   </script>
 
