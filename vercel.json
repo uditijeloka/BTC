@@ -1,0 +1,6 @@
+{
+  "rewrites": [
+    { "source": "/WIB", "destination": "/wib.html" },
+    { "source": "/btc", "destination": "/index.html" }
+  ]
+}
