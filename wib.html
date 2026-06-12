@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>L&D Coordinator — WIB</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:        #1e1a18;
+      --warm-bg:    #f7f3ee;
+      --paper:      #ffffff;
+      --accent:     #6b4f38;
+      --accent2:    #9c7358;
+      --accent-lt:  #ede0d4;
+      --muted:      #8a7a6e;
+      --border:     #e2d8cf;
+      --tag-bg:     #f0e6dc;
+      --lora: 'Lora', Georgia, serif;
+      --sans: 'DM Sans', system-ui, sans-serif;
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--warm-bg);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.6;
+      overflow: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      background: rgba(247,243,238,0.96);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 3rem;
+      height: 56px;
+    }
+    .nav-logo {
+      font-family: var(--lora);
+      font-size: 0.95rem;
+      color: var(--accent);
+      font-style: italic;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .nav-links {
+      display: flex;
+      gap: 0.15rem;
+      list-style: none;
+    }
+    .nav-links button {
+      background: none;
+      border: none;
+      font-family: var(--sans);
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      cursor: pointer;
+      padding: 0.4rem 0.75rem;
+      border-radius: 4px;
+      transition: color 0.2s, background 0.2s;
+    }
+    .nav-links button:hover { color: var(--accent); background: var(--accent-lt); }
+    .nav-links button.active { color: var(--accent); font-weight: 600; }
+
+    /* ── PAGE CONTAINER ── */
+    #app {
+      position: fixed;
+      top: 56px; left: 0; right: 0; bottom: 0;
+      overflow: hidden;
+    }
+    .page {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      overflow-y: auto;
+      padding: 4rem 3rem 6rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      transform: translateY(16px);
+    }
+    .page.active {
+      opacity: 1;
+      pointer-events: all;
+      transform: translateY(0);
+    }
+    .page-inner {
+      max-width: 820px;
+      margin: 0 auto;
+    }
+
+    /* ── BOTTOM NAV ── */
+    .page-nav {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      z-index: 200;
+      background: rgba(247,243,238,0.96);
+      backdrop-filter: blur(8px);
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 3rem;
+    }
+    .page-nav-label {
+      font-size: 0.78rem;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .page-nav-btns { display: flex; gap: 0.75rem; }
+    .btn-nav {
+      background: none;
+      border: 1.5px solid var(--border);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 0.85rem;
+      font-weight: 500;
+      padding: 0.5rem 1.2rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-nav:hover { border-color: var(--accent); color: var(--accent); }
+    .btn-nav.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .btn-nav.primary:hover { background: #573e2c; }
+    .btn-nav:disabled { opacity: 0.3; cursor: default; }
+
+    /* ── TYPOGRAPHY ── */
+    .eyebrow {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      margin-bottom: 0.9rem;
+    }
+    h1 {
+      font-family: var(--lora);
+      font-size: clamp(2.2rem, 4.5vw, 3.2rem);
+      line-height: 1.15;
+      font-weight: 600;
+      margin-bottom: 1.2rem;
+    }
+    h1 em { font-style: italic; color: var(--accent); }
+    h2 {
+      font-family: var(--lora);
+      font-size: clamp(1.5rem, 2.8vw, 2.1rem);
+      line-height: 1.2;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+    }
+    .lead {
+      font-size: 1.02rem;
+      color: var(--muted);
+      line-height: 1.85;
+      max-width: 620px;
+      margin-bottom: 2.5rem;
+    }
+
+    /* ── BUTTONS ── */
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--accent); color: #fff; border: none;
+      padding: 0.7rem 1.5rem; border-radius: 4px;
+      font-family: var(--sans); font-size: 0.9rem; font-weight: 500;
+      cursor: pointer; transition: background 0.2s, transform 0.15s;
+    }
+    .btn-primary:hover { background: #573e2c; transform: translateY(-1px); }
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: transparent; color: var(--accent);
+      border: 1.5px solid var(--accent);
+      padding: 0.68rem 1.5rem; border-radius: 4px;
+      font-family: var(--sans); font-size: 0.9rem; font-weight: 500;
+      cursor: pointer; transition: background 0.2s;
+    }
+    .btn-ghost:hover { background: var(--accent-lt); }
+
+    /* ── SECTION LABEL ── */
+    .section-label {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      margin-bottom: 1.1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* ─────────── HOME ─────────── */
+    #page-home .page-inner {
+      display: flex; flex-direction: column;
+      justify-content: center;
+      min-height: calc(100vh - 120px);
+      padding-top: 1rem;
+    }
+    .home-actions { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 0.5rem; }
+    .home-divider { width: 44px; height: 3px; background: var(--accent); border-radius: 2px; margin: 2.5rem 0 0; }
+
+    .prop-box {
+      background: var(--accent);
+      color: #fff;
+      border-radius: 10px;
+      padding: 2rem 2.4rem;
+      margin-bottom: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .prop-box::after {
+      content: '◈';
+      font-size: 9rem;
+      color: #fff;
+      opacity: 0.06;
+      position: absolute;
+      right: 1.2rem; bottom: -1.5rem;
+      line-height: 1; pointer-events: none;
+    }
+    .prop-box .prop-label {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: #e8d5c4;
+      margin-bottom: 0.6rem;
+    }
+    .prop-box h3 {
+      font-family: var(--lora);
+      font-size: 1.45rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 0.7rem;
+      line-height: 1.3;
+    }
+    .prop-box p { color: #e8d5c4; font-size: 0.95rem; line-height: 1.8; max-width: 540px; }
+
+    .tracks-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.5rem; }
+    .track-card {
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.3rem 1.4rem;
+    }
+    .track-card .track-icon { font-size: 1.2rem; margin-bottom: 0.5rem; }
+    .track-card h4 { font-family: var(--lora); font-size: 0.95rem; font-weight: 600; margin-bottom: 0.4rem; }
+    .track-card p { font-size: 0.84rem; color: var(--muted); line-height: 1.6; }
+
+    /* ─────────── EVENTS ─────────── */
+    .events-tabs { display: flex; gap: 0.5rem; margin-bottom: 1.8rem; }
+    .ev-tab {
+      background: none; border: 1.5px solid var(--border);
+      color: var(--muted); font-family: var(--sans);
+      font-size: 0.82rem; font-weight: 500;
+      padding: 0.4rem 1rem; border-radius: 20px;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .ev-tab.active, .ev-tab:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-lt); }
+
+    .event-cards { display: flex; flex-direction: column; gap: 1.1rem; }
+    .event-card {
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.5rem 1.7rem;
+      transition: box-shadow 0.2s;
+      position: relative;
+    }
+    .event-card:hover { box-shadow: 0 4px 18px rgba(0,0,0,0.07); }
+    .event-card.past { opacity: 0.88; }
+    .event-card-head {
+      display: flex; align-items: flex-start;
+      justify-content: space-between; gap: 1rem;
+      margin-bottom: 0.6rem;
+    }
+    .event-card h3 { font-family: var(--lora); font-size: 1.05rem; font-weight: 600; }
+    .ev-badge {
+      font-size: 0.68rem; font-weight: 500; letter-spacing: 0.07em;
+      text-transform: uppercase; padding: 0.2rem 0.6rem;
+      border-radius: 3px; white-space: nowrap; flex-shrink: 0;
+    }
+    .ev-badge.upcoming { background: #e8f5e9; color: #388e3c; }
+    .ev-badge.past { background: var(--tag-bg); color: var(--accent2); }
+    .ev-badge.open { background: #fff3e0; color: #e65100; }
+
+    .event-meta {
+      font-size: 0.82rem; color: var(--muted);
+      display: flex; gap: 1.2rem; flex-wrap: wrap;
+      margin-bottom: 0.75rem;
+    }
+    .event-meta span { display: flex; align-items: center; gap: 0.3rem; }
+    .event-desc { font-size: 0.9rem; color: var(--ink); line-height: 1.65; margin-bottom: 1rem; }
+
+    .event-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center; }
+    .btn-register {
+      background: var(--accent); color: #fff; border: none;
+      padding: 0.55rem 1.2rem; border-radius: 4px;
+      font-family: var(--sans); font-size: 0.85rem; font-weight: 500;
+      cursor: pointer; transition: background 0.2s;
+    }
+    .btn-register:hover { background: #573e2c; }
+    .btn-feedback {
+      background: none; color: var(--accent2);
+      border: 1.5px solid var(--accent-lt);
+      padding: 0.53rem 1.1rem; border-radius: 4px;
+      font-family: var(--sans); font-size: 0.85rem; font-weight: 500;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .btn-feedback:hover { border-color: var(--accent2); background: var(--accent-lt); }
+
+    .feedback-bar {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px dashed var(--border);
+    }
+    .feedback-bar-label {
+      font-size: 0.78rem; color: var(--muted);
+      display: flex; justify-content: space-between;
+      margin-bottom: 0.4rem;
+    }
+    .bar-track { background: var(--accent-lt); border-radius: 20px; height: 6px; overflow: hidden; }
+    .bar-fill { height: 100%; background: var(--accent); border-radius: 20px; transition: width 0.6s ease; }
+    .feedback-themes {
+      display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.7rem;
+    }
+    .theme-chip {
+      background: var(--tag-bg); color: var(--accent);
+      font-size: 0.72rem; padding: 0.2rem 0.6rem;
+      border-radius: 20px; font-weight: 500;
+    }
+
+    /* Register modal (inline) */
+    .reg-form {
+      display: none;
+      margin-top: 1.1rem;
+      padding: 1.3rem;
+      background: var(--warm-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+    .reg-form.visible { display: block; }
+    .reg-form h4 { font-family: var(--lora); font-size: 0.95rem; margin-bottom: 0.9rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; margin-bottom: 0.7rem; }
+    .form-field { display: flex; flex-direction: column; gap: 0.3rem; }
+    .form-field label { font-size: 0.78rem; color: var(--muted); font-weight: 500; }
+    .form-field input, .form-field select {
+      border: 1.5px solid var(--border); border-radius: 4px;
+      padding: 0.5rem 0.75rem; font-family: var(--sans); font-size: 0.88rem;
+      background: var(--paper); color: var(--ink);
+      transition: border-color 0.2s;
+    }
+    .form-field input:focus, .form-field select:focus {
+      outline: none; border-color: var(--accent);
+    }
+    .form-actions { display: flex; gap: 0.7rem; margin-top: 0.9rem; }
+    .btn-submit {
+      background: var(--accent); color: #fff; border: none;
+      padding: 0.55rem 1.3rem; border-radius: 4px;
+      font-family: var(--sans); font-size: 0.85rem; font-weight: 500; cursor: pointer;
+    }
+    .btn-cancel {
+      background: none; color: var(--muted); border: 1.5px solid var(--border);
+      padding: 0.53rem 1.1rem; border-radius: 4px;
+      font-family: var(--sans); font-size: 0.85rem; cursor: pointer;
+    }
+    .reg-confirm {
+      display: none; text-align: center;
+      padding: 1rem 0; color: var(--accent); font-size: 0.9rem;
+    }
+    .reg-confirm.visible { display: block; }
+
+    /* ─────────── RESOURCES ─────────── */
+    .filter-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.8rem; }
+    .filter-chip {
+      background: none; border: 1.5px solid var(--border);
+      color: var(--muted); font-family: var(--sans);
+      font-size: 0.8rem; font-weight: 500; padding: 0.35rem 0.9rem;
+      border-radius: 20px; cursor: pointer; transition: all 0.2s;
+    }
+    .filter-chip.active, .filter-chip:hover {
+      border-color: var(--accent); color: var(--accent); background: var(--accent-lt);
+    }
+    .resources-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .res-card {
+      background: var(--paper); border: 1px solid var(--border);
+      border-radius: 8px; padding: 1.4rem;
+      transition: box-shadow 0.2s; cursor: pointer;
+    }
+    .res-card:hover { box-shadow: 0 4px 18px rgba(0,0,0,0.07); }
+    .res-card-top {
+      display: flex; align-items: flex-start;
+      justify-content: space-between; gap: 0.5rem; margin-bottom: 0.5rem;
+    }
+    .res-type {
+      font-size: 0.68rem; font-weight: 500; letter-spacing: 0.08em;
+      text-transform: uppercase; padding: 0.18rem 0.5rem;
+      border-radius: 3px; white-space: nowrap;
+    }
+    .res-type.toolkit { background: #e3f2fd; color: #1565c0; }
+    .res-type.workshop { background: #f3e5f5; color: #6a1b9a; }
+    .res-type.article { background: #e8f5e9; color: #2e7d32; }
+    .res-type.template { background: #fff3e0; color: #e65100; }
+    .res-card h4 { font-family: var(--lora); font-size: 0.97rem; font-weight: 600; margin-bottom: 0.4rem; }
+    .res-card p { font-size: 0.84rem; color: var(--muted); line-height: 1.6; margin-bottom: 0.8rem; }
+    .res-tags { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+    .res-tag {
+      background: var(--tag-bg); color: var(--accent2);
+      font-size: 0.68rem; font-weight: 500; letter-spacing: 0.05em;
+      text-transform: uppercase; padding: 0.15rem 0.5rem; border-radius: 3px;
+    }
+
+    /* ─────────── CALENDAR ─────────── */
+    .cal-layout {
+      display: grid; grid-template-columns: 1fr 280px; gap: 2rem;
+    }
+    .cal-grid {
+      background: var(--paper);
+      border: 1px solid var(--border); border-radius: 10px;
+      overflow: hidden;
+    }
+    .cal-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 1.4rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .cal-header h3 { font-family: var(--lora); font-size: 1.1rem; font-weight: 600; }
+    .cal-nav-btn {
+      background: none; border: 1.5px solid var(--border);
+      color: var(--muted); padding: 0.3rem 0.7rem;
+      border-radius: 4px; cursor: pointer; font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+    .cal-nav-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .cal-days-header {
+      display: grid; grid-template-columns: repeat(7, 1fr);
+      border-bottom: 1px solid var(--border);
+    }
+    .cal-day-name {
+      text-align: center; padding: 0.5rem 0;
+      font-size: 0.72rem; font-weight: 500;
+      letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted);
+    }
+    .cal-cells {
+      display: grid; grid-template-columns: repeat(7, 1fr);
+    }
+    .cal-cell {
+      min-height: 64px; padding: 0.4rem;
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+    .cal-cell:nth-child(7n) { border-right: none; }
+    .cal-cell.other-month .cell-num { color: #ccc; }
+    .cell-num {
+      font-size: 0.82rem; font-weight: 500; color: var(--ink);
+      width: 24px; height: 24px; display: flex; align-items: center;
+      justify-content: center; border-radius: 50%;
+    }
+    .cal-cell.today .cell-num {
+      background: var(--accent); color: #fff;
+    }
+    .cal-event-dot {
+      display: block; margin-top: 3px;
+      font-size: 0.62rem; color: var(--accent);
+      background: var(--accent-lt); border-radius: 3px;
+      padding: 0 3px; line-height: 1.6;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      cursor: pointer;
+    }
+
+    .upcoming-list h4 {
+      font-family: var(--lora); font-size: 0.95rem; font-weight: 600;
+      margin-bottom: 1rem; color: var(--ink);
+    }
+    .upcoming-item {
+      padding: 0.85rem;
+      background: var(--paper); border: 1px solid var(--border);
+      border-radius: 6px; margin-bottom: 0.65rem;
+    }
+    .upcoming-item .ui-date {
+      font-size: 0.72rem; font-weight: 500; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--accent2); margin-bottom: 0.25rem;
+    }
+    .upcoming-item .ui-title {
+      font-size: 0.88rem; font-weight: 500; color: var(--ink); margin-bottom: 0.2rem;
+    }
+    .upcoming-item .ui-type {
+      font-size: 0.75rem; color: var(--muted);
+    }
+
+    /* ─────────── ALUMNI ─────────── */
+    .alumni-filter { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.8rem; }
+
+    .alumni-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;
+    }
+    .alumni-card {
+      background: var(--paper); border: 1px solid var(--border);
+      border-radius: 8px; padding: 1.3rem;
+      transition: box-shadow 0.2s;
+    }
+    .alumni-card:hover { box-shadow: 0 4px 18px rgba(0,0,0,0.07); }
+    .alumni-avatar {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--accent-lt); display: flex; align-items: center;
+      justify-content: center; font-family: var(--lora);
+      font-size: 1.1rem; font-weight: 600; color: var(--accent);
+      margin-bottom: 0.8rem;
+    }
+    .alumni-card h4 { font-family: var(--lora); font-size: 0.95rem; font-weight: 600; margin-bottom: 0.2rem; }
+    .alumni-card .alumni-role { font-size: 0.82rem; color: var(--accent2); margin-bottom: 0.15rem; }
+    .alumni-card .alumni-co { font-size: 0.82rem; color: var(--muted); margin-bottom: 0.75rem; }
+    .alumni-tags { display: flex; gap: 0.35rem; flex-wrap: wrap; margin-bottom: 0.7rem; }
+    .alumni-tag {
+      background: var(--tag-bg); color: var(--accent);
+      font-size: 0.68rem; font-weight: 500; letter-spacing: 0.05em;
+      text-transform: uppercase; padding: 0.15rem 0.5rem; border-radius: 3px;
+    }
+    .alumni-card .alumni-note {
+      font-size: 0.82rem; color: var(--muted);
+      font-style: italic; line-height: 1.55;
+      border-top: 1px dashed var(--border); padding-top: 0.65rem; margin-top: 0.1rem;
+    }
+    .alumni-connect {
+      display: inline-block; margin-top: 0.7rem;
+      font-size: 0.78rem; color: var(--accent); text-decoration: none;
+      border-bottom: 1px solid var(--accent-lt); cursor: pointer;
+    }
+
+    /* ─────────── FOOTER ─────────── */
+    .footer-note {
+      text-align: center; padding: 3rem 0 1rem;
+      font-size: 0.85rem; color: var(--muted);
+      font-style: italic; border-top: 1px solid var(--border); margin-top: 3rem;
+    }
+    .footer-note strong { color: var(--accent); font-style: normal; }
+
+    /* ─────────── RESPONSIVE ─────────── */
+    @media (max-width: 760px) {
+      nav, .page-nav { padding: 0 1.2rem; }
+      .page { padding: 2rem 1.2rem 5rem; }
+      .tracks-row, .resources-grid, .alumni-grid { grid-template-columns: 1fr; }
+      .cal-layout { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .nav-links button { padding: 0.4rem 0.45rem; font-size: 0.7rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP NAV -->
+  <nav>
+    <span class="nav-logo" onclick="goTo(0)">WIB · L&D Coordinator</span>
+    <ul class="nav-links">
+      <li><button onclick="goTo(0)" class="active" id="nav-0">Home</button></li>
+      <li><button onclick="goTo(1)" id="nav-1">Events</button></li>
+      <li><button onclick="goTo(2)" id="nav-2">Resources</button></li>
+      <li><button onclick="goTo(3)" id="nav-3">Calendar</button></li>
+      <li><button onclick="goTo(4)" id="nav-4">Alumni</button></li>
+    </ul>
+  </nav>
+
+  <div id="app">
+
+    <!-- ═══ PAGE 0: HOME ═══ -->
+    <div class="page active" id="page-home">
+      <div class="page-inner">
+        <p class="eyebrow">Applying for · L&D Coordinator · Women in Business · ISB</p>
+        <h1>Learning that gives<br>every woman <em>an edge</em><br>in business.</h1>
+        <p class="lead">The most underestimated skill gap for women in business today isn't leadership or networking — it's tech fluency. I want WIB's L&D to close that gap, one session at a time.</p>
+        <div class="home-actions">
+          <button class="btn-primary" onclick="goTo(1)">See the vision →</button>
+          <button class="btn-ghost" onclick="goTo(2)">Explore Resources</button>
+        </div>
+        <div class="home-divider"></div>
+
+        <div style="margin-top: 2.5rem;">
+          <div class="prop-box">
+            <p class="prop-label">My unique proposition</p>
+            <h3>Tech isn't a domain. It's a language — and every woman in business needs to speak it.</h3>
+            <p>From reading a dashboard to understanding AI tools, negotiating SaaS contracts, or decoding a product roadmap — tech literacy is the new business literacy. I'll build an L&D program that makes this accessible, practical, and relevant to wherever our members are headed.</p>
+          </div>
+
+          <div class="tracks-row">
+            <div class="track-card">
+              <div class="track-icon">🏢</div>
+              <h4>Corporate Navigation Track</h4>
+              <p>Workshops on thriving in corporate environments — from decoding org politics to owning your career trajectory with data and confidence.</p>
+            </div>
+            <div class="track-card">
+              <div class="track-icon">🚀</div>
+              <h4>Incubation Track</h4>
+              <p>Structured sessions to help members ideate and launch real business ideas — from problem identification to lean validation and pitching.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-note" style="margin-top:2.5rem; border-top: none;">
+          <strong>This page is the proof of concept.</strong><br>
+          Every tab you see — Events, Resources, Calendar, Alumni — is the L&D system I'd build for WIB.
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ PAGE 1: EVENTS ═══ -->
+    <div class="page" id="page-events">
+      <div class="page-inner">
+        <p class="eyebrow">Page 01 — Events</p>
+        <h2>Upcoming &amp; Past Events</h2>
+        <p class="lead">Register for sessions, and post-event, contribute to a living feedback loop that shapes what we do next.</p>
+
+        <div class="events-tabs">
+          <button class="ev-tab active" onclick="filterEvents('all', this)">All Events</button>
+          <button class="ev-tab" onclick="filterEvents('upcoming', this)">Upcoming</button>
+          <button class="ev-tab" onclick="filterEvents('past', this)">Past</button>
+        </div>
+
+        <div class="event-cards">
+
+          <!-- UPCOMING 1 -->
+          <div class="event-card" data-status="upcoming">
+            <div class="event-card-head">
+              <h3>AI Tools Every Business Woman Needs in 2025</h3>
+              <span class="ev-badge upcoming">Upcoming</span>
+            </div>
+            <div class="event-meta">
+              <span>📅 22 June 2026</span>
+              <span>⏰ 4:00 PM – 6:00 PM</span>
+              <span>📍 Auditorium B, ISB</span>
+              <span>🎙 Priya Nair, VP Product · Flipkart</span>
+            </div>
+            <p class="event-desc">A hands-on walkthrough of AI tools that give business professionals a real edge — from ChatGPT for business writing to Notion AI for project management and data tools for non-analysts. No coding required.</p>
+            <div class="event-actions">
+              <button class="btn-register" onclick="toggleReg('reg1')">Register Now</button>
+              <span class="ev-badge open" style="align-self:center;">18 seats left</span>
+            </div>
+            <div class="reg-form" id="reg1">
+              <h4>Register for this session</h4>
+              <div class="form-row">
+                <div class="form-field"><label>Full Name</label><input type="text" placeholder="Your name" /></div>
+                <div class="form-field"><label>Roll No.</label><input type="text" placeholder="ISB2025XXX" /></div>
+              </div>
+              <div class="form-row">
+                <div class="form-field"><label>Programme</label>
+                  <select><option>PGP</option><option>PGPpro</option><option>MFAB</option><option>Other</option></select>
+                </div>
+                <div class="form-field"><label>Track Interest</label>
+                  <select><option>Corporate Navigation</option><option>Incubation</option><option>Both</option></select>
+                </div>
+              </div>
+              <div class="form-actions">
+                <button class="btn-submit" onclick="confirmReg('reg1', 'conf1')">Confirm Registration</button>
+                <button class="btn-cancel" onclick="toggleReg('reg1')">Cancel</button>
+              </div>
+            </div>
+            <div class="reg-confirm" id="conf1">✓ You're registered! A calendar invite will be sent to your ISB email.</div>
+          </div>
+
+          <!-- UPCOMING 2 -->
+          <div class="event-card" data-status="upcoming">
+            <div class="event-card-head">
+              <h3>Reading the Room: Finance &amp; Data for Non-Finance Leaders</h3>
+              <span class="ev-badge upcoming">Upcoming</span>
+            </div>
+            <div class="event-meta">
+              <span>📅 5 July 2026</span>
+              <span>⏰ 5:30 PM – 7:30 PM</span>
+              <span>📍 AC3 – 105, ISB</span>
+              <span>🎙 Rohan Mehta, CFO · Razorpay</span>
+            </div>
+            <p class="event-desc">Demystifying P&L, unit economics, and financial models — for people who lead teams, not balance sheets. Walk away able to hold your own in a boardroom conversation about numbers.</p>
+            <div class="event-actions">
+              <button class="btn-register" onclick="toggleReg('reg2')">Register Now</button>
+              <span class="ev-badge open" style="align-self:center;">34 seats left</span>
+            </div>
+            <div class="reg-form" id="reg2">
+              <h4>Register for this session</h4>
+              <div class="form-row">
+                <div class="form-field"><label>Full Name</label><input type="text" placeholder="Your name" /></div>
+                <div class="form-field"><label>Roll No.</label><input type="text" placeholder="ISB2025XXX" /></div>
+              </div>
+              <div class="form-row">
+                <div class="form-field"><label>Programme</label>
+                  <select><option>PGP</option><option>PGPpro</option><option>MFAB</option><option>Other</option></select>
+                </div>
+                <div class="form-field"><label>Track Interest</label>
+                  <select><option>Corporate Navigation</option><option>Incubation</option><option>Both</option></select>
+                </div>
+              </div>
+              <div class="form-actions">
+                <button class="btn-submit" onclick="confirmReg('reg2', 'conf2')">Confirm Registration</button>
+                <button class="btn-cancel" onclick="toggleReg('reg2')">Cancel</button>
+              </div>
+            </div>
+            <div class="reg-confirm" id="conf2">✓ You're registered! A calendar invite will be sent to your ISB email.</div>
+          </div>
+
+          <!-- UPCOMING 3 -->
+          <div class="event-card" data-status="upcoming">
+            <div class="event-card-head">
+              <h3>Founder's Lens: Validating a Business Idea in 30 Days</h3>
+              <span class="ev-badge upcoming">Upcoming</span>
+            </div>
+            <div class="event-meta">
+              <span>📅 19 July 2026</span>
+              <span>⏰ 3:00 PM – 5:30 PM</span>
+              <span>📍 LRC 2, ISB</span>
+              <span>🎙 Ananya Sharma, Co-Founder · Sprinklr</span>
+            </div>
+            <p class="event-desc">Part of the Incubation Track — an interactive workshop on lean validation methods, customer discovery interviews, and building your first hypothesis. Kickstart one of three business ideas you'll develop this year.</p>
+            <div class="event-actions">
+              <button class="btn-register" onclick="toggleReg('reg3')">Register Now</button>
+              <span class="ev-badge open" style="align-self:center;">12 seats left</span>
+            </div>
+            <div class="reg-form" id="reg3">
+              <h4>Register for this session</h4>
+              <div class="form-row">
+                <div class="form-field"><label>Full Name</label><input type="text" placeholder="Your name" /></div>
+                <div class="form-field"><label>Roll No.</label><input type="text" placeholder="ISB2025XXX" /></div>
+              </div>
+              <div class="form-row">
+                <div class="form-field"><label>Programme</label>
+                  <select><option>PGP</option><option>PGPpro</option><option>MFAB</option><option>Other</option></select>
+                </div>
+                <div class="form-field"><label>Track Interest</label>
+                  <select><option>Corporate Navigation</option><option>Incubation</option><option>Both</option></select>
+                </div>
+              </div>
+              <div class="form-actions">
+                <button class="btn-submit" onclick="confirmReg('reg3', 'conf3')">Confirm Registration</button>
+                <button class="btn-cancel" onclick="toggleReg('reg3')">Cancel</button>
+              </div>
+            </div>
+            <div class="reg-confirm" id="conf3">✓ You're registered! A calendar invite will be sent to your ISB email.</div>
+          </div>
+
+          <!-- PAST 1 -->
+          <div class="event-card past" data-status="past">
+            <div class="event-card-head">
+              <h3>Negotiation Lab: Getting What You're Worth</h3>
+              <span class="ev-badge past">Completed</span>
+            </div>
+            <div class="event-meta">
+              <span>📅 3 May 2026</span>
+              <span>👥 62 attendees</span>
+              <span>🎙 Dr. Kavitha Rao, Professor OB · ISB</span>
+            </div>
+            <p class="event-desc">Role-play based negotiation workshop covering salary negotiation, stakeholder influence, and navigating gender dynamics in high-stakes conversations.</p>
+            <div class="event-actions">
+              <button class="btn-feedback" onclick="toggleFeedback('fb1')">View Feedback Summary</button>
+              <button class="btn-feedback">Share Your Feedback</button>
+            </div>
+            <div id="fb1" style="display:none;">
+              <div class="feedback-bar">
+                <div class="feedback-bar-label">
+                  <span>Feedback collected</span>
+                  <span>48 / 62 responses (77%)</span>
+                </div>
+                <div class="bar-track"><div class="bar-fill" style="width: 77%;"></div></div>
+                <div class="feedback-themes">
+                  <span class="theme-chip">🌟 Highly practical</span>
+                  <span class="theme-chip">💬 More time needed</span>
+                  <span class="theme-chip">✅ Real scenarios valued</span>
+                  <span class="theme-chip">🔁 Repeat annually</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- PAST 2 -->
+          <div class="event-card past" data-status="past">
+            <div class="event-card-head">
+              <h3>Tech for Non-Tech Managers: A Primer</h3>
+              <span class="ev-badge past">Completed</span>
+            </div>
+            <div class="event-meta">
+              <span>📅 14 April 2026</span>
+              <span>👥 55 attendees</span>
+              <span>🎙 Meera Iyer, Engineering Manager · Google</span>
+            </div>
+            <p class="event-desc">Introduction to how software teams work, reading a tech roadmap, understanding APIs, databases, and sprint cycles — for managers who lead technical teams but don't come from engineering.</p>
+            <div class="event-actions">
+              <button class="btn-feedback" onclick="toggleFeedback('fb2')">View Feedback Summary</button>
+              <button class="btn-feedback">Share Your Feedback</button>
+            </div>
+            <div id="fb2" style="display:none;">
+              <div class="feedback-bar">
+                <div class="feedback-bar-label">
+                  <span>Feedback collected</span>
+                  <span>51 / 55 responses (93%)</span>
+                </div>
+                <div class="bar-track"><div class="bar-fill" style="width: 93%;"></div></div>
+                <div class="feedback-themes">
+                  <span class="theme-chip">🔥 Most requested topic</span>
+                  <span class="theme-chip">📖 Need a follow-up</span>
+                  <span class="theme-chip">✅ Speaker excellent</span>
+                  <span class="theme-chip">💡 Want toolkit</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /event-cards -->
+      </div>
+    </div>
+
+    <!-- ═══ PAGE 2: RESOURCES ═══ -->
+    <div class="page" id="page-resources">
+      <div class="page-inner">
+        <p class="eyebrow">Page 02 — Learning Resource Centre</p>
+        <h2>Your Knowledge<br>Toolkit</h2>
+        <p class="lead">Curated resources across hard skills, soft skills, and both tracks. Filter by what you need right now.</p>
+
+        <div class="filter-row">
+          <button class="filter-chip active" onclick="filterRes('all', this)">All</button>
+          <button class="filter-chip" onclick="filterRes('hard', this)">Hard Skills</button>
+          <button class="filter-chip" onclick="filterRes('soft', this)">Soft Skills</button>
+          <button class="filter-chip" onclick="filterRes('corp', this)">Corporate Track</button>
+          <button class="filter-chip" onclick="filterRes('incubation', this)">Incubation Track</button>
+          <button class="filter-chip" onclick="filterRes('tech', this)">Tech Literacy</button>
+        </div>
+
+        <div class="resources-grid" id="res-grid">
+
+          <div class="res-card" data-cats="hard tech">
+            <div class="res-card-top">
+              <div>
+                <span class="res-type toolkit">Toolkit</span>
+              </div>
+            </div>
+            <h4>The Business Woman's AI Toolkit</h4>
+            <p>A curated guide to 12 AI tools with use-cases specific to business roles — strategy, marketing, ops, and finance. No technical background required.</p>
+            <div class="res-tags">
+              <span class="res-tag">Tech Literacy</span>
+              <span class="res-tag">Hard Skills</span>
+              <span class="res-tag">AI</span>
+            </div>
+          </div>
+
+          <div class="res-card" data-cats="soft corp">
+            <div class="res-card-top">
+              <div>
+                <span class="res-type workshop">Workshop Recording</span>
+              </div>
+            </div>
+            <h4>Negotiation Lab — Session Recording</h4>
+            <p>Full recording of the May 2026 negotiation workshop with Dr. Kavitha Rao, including the role-play debrief and Q&amp;A.</p>
+            <div class="res-tags">
+              <span class="res-tag">Soft Skills</span>
+              <span class="res-tag">Corporate Track</span>
+              <span class="res-tag">Negotiation</span>
+            </div>
+          </div>
+
+          <div class="res-card" data-cats="hard tech corp">
+            <div class="res-card-top">
+              <div>
+                <span class="res-type article">Article</span>
+              </div>
+            </div>
+            <h4>How to Read a Tech Roadmap (Without Being Technical)</h4>
+            <p>A practical guide to understanding engineering timelines, sprint terminology, and how to ask the right questions when managing a technical team.</p>
+            <div class="res-tags">
+              <span class="res-tag">Tech Literacy</span>
+              <span class="res-tag">Hard Skills</span>
+              <span class="res-tag">Management</span>
+            </div>
+          </div>
+
+          <div class="res-card" data-cats="incubation hard">
+            <div class="res-card-top">
+              <div>
+                <span class="res-type template">Template</span>
+              </div>
+            </div>
+            <h4>Idea Validation Canvas</h4>
+            <p>A one-page template for mapping your business idea — problem, customer segment, unique value proposition, and first validation steps.</p>
+            <div class="res-tags">
+              <span class="res-tag">Incubation Track</span>
+              <span class="res-tag">Template</span>
+              <span class="res-tag">Entrepreneurship</span>
+            </div>
+          </div>
+
+          <div class="res-card" data-cats="soft corp">
+            <div class="res-card-top">
+              <div>
+                <span class="res-type article">Article</span>
+              </div>
+            </div>
+            <h4>The Unwritten Rules of Corporate Culture</h4>
+            <p>What nobody tells you when you join a large organisation — stakeholder management, visibility, managing up, and knowing which battles to pick.</p>
+            <div class="res-tags">
+              <span class="res-tag">Soft Skills</span>
+              <span class="res-tag">Corporate Track</span>
+              <span class="res-tag">Culture</span>
+            </div>
+          </div>
+
+          <div class="res-card" data-cats="hard tech incubation">
+            <div class="res-card-top">
+              <div>
+                <span class="res-type toolkit">Toolkit</span>
+              </div>
+            </div>
+            <h4>Data Storytelling for Business Presentations</h4>
+            <p>How to turn raw data into compelling narratives — chart selection, decluttering, and structuring a data-driven argument for any audience.</p>
+            <div class="res-tags">
+              <span class="res-tag">Tech Literacy</span>
+              <span class="res-tag">Hard Skills</span>
+              <span class="res-tag">Presentations</span>
+            </div>
+          </div>
+
+          <div class="res-card" data-cats="incubation soft">
+            <div class="res-card-top">
+              <div>
+                <span class="res-type workshop">Workshop Recording</span>
+              </div>
+            </div>
+            <h4>Customer Discovery: Asking the Right Questions</h4>
+            <p>Recording of a 90-minute deep dive on conducting customer interviews — how to avoid leading questions and synthesise insights into validated assumptions.</p>
+            <div class="res-tags">
+              <span class="res-tag">Incubation Track</span>
+              <span class="res-tag">Soft Skills</span>
+              <span class="res-tag">Research</span>
+            </div>
+          </div>
+
+          <div class="res-card" data-cats="hard corp">
+            <div class="res-card-top">
+              <div>
+                <span class="res-type template">Template</span>
+              </div>
+            </div>
+            <h4>90-Day Onboarding Plan Template</h4>
+            <p>A structured framework for your first three months at any new organisation — goal-setting, relationship mapping, and quick-win identification.</p>
+            <div class="res-tags">
+              <span class="res-tag">Corporate Track</span>
+              <span class="res-tag">Template</span>
+              <span class="res-tag">Career Planning</span>
+            </div>
+          </div>
+
+        </div><!-- /resources-grid -->
+      </div>
+    </div>
+
+    <!-- ═══ PAGE 3: CALENDAR ═══ -->
+    <div class="page" id="page-calendar">
+      <div class="page-inner">
+        <p class="eyebrow">Page 03 — Calendar</p>
+        <h2>What's Coming Up</h2>
+        <p class="lead">A live view of all WIB L&D sessions. Plan your month around learning.</p>
+
+        <div class="cal-layout">
+          <div>
+            <div class="cal-grid">
+              <div class="cal-header">
+                <button class="cal-nav-btn">‹</button>
+                <h3>June 2026</h3>
+                <button class="cal-nav-btn">›</button>
+              </div>
+              <div class="cal-days-header">
+                <div class="cal-day-name">Sun</div>
+                <div class="cal-day-name">Mon</div>
+                <div class="cal-day-name">Tue</div>
+                <div class="cal-day-name">Wed</div>
+                <div class="cal-day-name">Thu</div>
+                <div class="cal-day-name">Fri</div>
+                <div class="cal-day-name">Sat</div>
+              </div>
+              <div class="cal-cells">
+                <!-- Week 1: June starts on Monday -->
+                <div class="cal-cell other-month"><span class="cell-num">1</span></div>
+                <div class="cal-cell"><span class="cell-num">2</span></div>
+                <div class="cal-cell"><span class="cell-num">3</span></div>
+                <div class="cal-cell"><span class="cell-num">4</span></div>
+                <div class="cal-cell"><span class="cell-num">5</span></div>
+                <div class="cal-cell"><span class="cell-num">6</span></div>
+                <div class="cal-cell"><span class="cell-num">7</span></div>
+                <!-- Week 2 -->
+                <div class="cal-cell"><span class="cell-num">8</span></div>
+                <div class="cal-cell"><span class="cell-num">9</span></div>
+                <div class="cal-cell"><span class="cell-num">10</span></div>
+                <div class="cal-cell"><span class="cell-num">11</span></div>
+                <div class="cal-cell today"><span class="cell-num">12</span></div>
+                <div class="cal-cell"><span class="cell-num">13</span></div>
+                <div class="cal-cell"><span class="cell-num">14</span></div>
+                <!-- Week 3 -->
+                <div class="cal-cell"><span class="cell-num">15</span></div>
+                <div class="cal-cell"><span class="cell-num">16</span></div>
+                <div class="cal-cell"><span class="cell-num">17</span></div>
+                <div class="cal-cell"><span class="cell-num">18</span></div>
+                <div class="cal-cell"><span class="cell-num">19</span></div>
+                <div class="cal-cell"><span class="cell-num">20</span></div>
+                <div class="cal-cell"><span class="cell-num">21</span></div>
+                <!-- Week 4 -->
+                <div class="cal-cell"><span class="cell-num">22</span><span class="cal-event-dot">AI Tools</span></div>
+                <div class="cal-cell"><span class="cell-num">23</span></div>
+                <div class="cal-cell"><span class="cell-num">24</span></div>
+                <div class="cal-cell"><span class="cell-num">25</span></div>
+                <div class="cal-cell"><span class="cell-num">26</span></div>
+                <div class="cal-cell"><span class="cell-num">27</span><span class="cal-event-dot">Office Hours</span></div>
+                <div class="cal-cell"><span class="cell-num">28</span></div>
+                <!-- Week 5 -->
+                <div class="cal-cell"><span class="cell-num">29</span></div>
+                <div class="cal-cell"><span class="cell-num">30</span></div>
+                <div class="cal-cell other-month"><span class="cell-num">1</span></div>
+                <div class="cal-cell other-month"><span class="cell-num">2</span></div>
+                <div class="cal-cell other-month"><span class="cell-num">3</span><span class="cal-event-dot">Alumni Talk</span></div>
+                <div class="cal-cell other-month"><span class="cell-num">4</span></div>
+                <div class="cal-cell other-month"><span class="cell-num">5</span><span class="cal-event-dot">Finance Wkshp</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="upcoming-list">
+            <h4>Next Up</h4>
+            <div class="upcoming-item">
+              <div class="ui-date">22 Jun · 4:00 PM</div>
+              <div class="ui-title">AI Tools Every Business Woman Needs</div>
+              <div class="ui-type">Workshop · Hard Skills · Tech Literacy</div>
+            </div>
+            <div class="upcoming-item">
+              <div class="ui-date">27 Jun · 12:30 PM</div>
+              <div class="ui-title">L&D Office Hours</div>
+              <div class="ui-type">Drop-in · Career Planning · Open to All</div>
+            </div>
+            <div class="upcoming-item">
+              <div class="ui-date">3 Jul · 5:00 PM</div>
+              <div class="ui-title">Alumni Talk: Breaking into VC</div>
+              <div class="ui-type">Talk · Incubation Track</div>
+            </div>
+            <div class="upcoming-item">
+              <div class="ui-date">5 Jul · 5:30 PM</div>
+              <div class="ui-title">Reading the Room: Finance for Leaders</div>
+              <div class="ui-type">Workshop · Hard Skills · Corporate Track</div>
+            </div>
+            <div class="upcoming-item">
+              <div class="ui-date">19 Jul · 3:00 PM</div>
+              <div class="ui-title">Founder's Lens: Validate in 30 Days</div>
+              <div class="ui-type">Workshop · Incubation Track</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ PAGE 4: ALUMNI ═══ -->
+    <div class="page" id="page-alumni">
+      <div class="page-inner">
+        <p class="eyebrow">Page 04 — Alumni Network</p>
+        <h2>Women Who've<br>Been There</h2>
+        <p class="lead">Connect with WIB alumni across industries. They've navigated the same crossroads — and they're here to help.</p>
+
+        <div class="alumni-filter">
+          <button class="filter-chip active" onclick="filterAlumni('all', this)">All</button>
+          <button class="filter-chip" onclick="filterAlumni('tech', this)">Tech &amp; Product</button>
+          <button class="filter-chip" onclick="filterAlumni('finance', this)">Finance</button>
+          <button class="filter-chip" onclick="filterAlumni('founder', this)">Founders</button>
+          <button class="filter-chip" onclick="filterAlumni('consulting', this)">Consulting</button>
+          <button class="filter-chip" onclick="filterAlumni('marketing', this)">Marketing</button>
+        </div>
+
+        <div class="alumni-grid" id="alumni-grid">
+
+          <div class="alumni-card" data-cat="tech">
+            <div class="alumni-avatar">MK</div>
+            <h4>Meera Krishnan</h4>
+            <div class="alumni-role">Senior Product Manager</div>
+            <div class="alumni-co">Google · Batch of 2021</div>
+            <div class="alumni-tags">
+              <span class="alumni-tag">Tech &amp; Product</span>
+              <span class="alumni-tag">PM Transitions</span>
+            </div>
+            <p class="alumni-note">"WIB gave me the confidence to pivot from ops to PM. Happy to speak to anyone making the same move."</p>
+            <span class="alumni-connect">Request a chat →</span>
+          </div>
+
+          <div class="alumni-card" data-cat="finance">
+            <div class="alumni-avatar">SA</div>
+            <h4>Sneha Agarwal</h4>
+            <div class="alumni-role">VP, Investment Banking</div>
+            <div class="alumni-co">Goldman Sachs · Batch of 2019</div>
+            <div class="alumni-tags">
+              <span class="alumni-tag">Finance</span>
+              <span class="alumni-tag">IB Recruiting</span>
+            </div>
+            <p class="alumni-note">"I demystify what actually gets you into IB — no fluff, just the real path and what to prepare."</p>
+            <span class="alumni-connect">Request a chat →</span>
+          </div>
+
+          <div class="alumni-card" data-cat="founder">
+            <div class="alumni-avatar">PT</div>
+            <h4>Prachi Tiwari</h4>
+            <div class="alumni-role">Co-Founder &amp; CEO</div>
+            <div class="alumni-co">Kira Health · Batch of 2020</div>
+            <div class="alumni-tags">
+              <span class="alumni-tag">Founder</span>
+              <span class="alumni-tag">HealthTech</span>
+              <span class="alumni-tag">Fundraising</span>
+            </div>
+            <p class="alumni-note">"Raised our seed round 8 months post-ISB. Happy to talk about idea validation, fundraising, and the messy middle."</p>
+            <span class="alumni-connect">Request a chat →</span>
+          </div>
+
+          <div class="alumni-card" data-cat="consulting">
+            <div class="alumni-avatar">RV</div>
+            <h4>Rashmi Venkatesh</h4>
+            <div class="alumni-role">Engagement Manager</div>
+            <div class="alumni-co">McKinsey &amp; Co. · Batch of 2022</div>
+            <div class="alumni-tags">
+              <span class="alumni-tag">Consulting</span>
+              <span class="alumni-tag">Case Prep</span>
+            </div>
+            <p class="alumni-note">"If you're targeting MBB, I'll tell you what actually matters in the process and what the preparation guides miss."</p>
+            <span class="alumni-connect">Request a chat →</span>
+          </div>
+
+          <div class="alumni-card" data-cat="marketing">
+            <div class="alumni-avatar">ND</div>
+            <h4>Nisha Desai</h4>
+            <div class="alumni-role">Head of Marketing, APAC</div>
+            <div class="alumni-co">Spotify · Batch of 2018</div>
+            <div class="alumni-tags">
+              <span class="alumni-tag">Marketing</span>
+              <span class="alumni-tag">Brand Strategy</span>
+              <span class="alumni-tag">Tech</span>
+            </div>
+            <p class="alumni-note">"Built Spotify's APAC creator marketing from scratch. Happy to mentor on brand, growth, and navigating big tech."</p>
+            <span class="alumni-connect">Request a chat →</span>
+          </div>
+
+          <div class="alumni-card" data-cat="tech founder">
+            <div class="alumni-avatar">AS</div>
+            <h4>Ananya Singh</h4>
+            <div class="alumni-role">Founder-in-Residence</div>
+            <div class="alumni-co">Z47 (formerly Matrix) · Batch of 2023</div>
+            <div class="alumni-tags">
+              <span class="alumni-tag">Founder</span>
+              <span class="alumni-tag">VC</span>
+              <span class="alumni-tag">Tech</span>
+            </div>
+            <p class="alumni-note">"Currently building in fintech. Will talk to anyone at the idea stage — especially if you're unsure whether to take the leap."</p>
+            <span class="alumni-connect">Request a chat →</span>
+          </div>
+
+        </div>
+
+        <div class="footer-note">
+          <strong>This is the system I'd build.</strong><br>
+          Events with a feedback loop. Resources you can actually find. Alumni you can actually reach. That's WIB L&D.
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /app -->
+
+  <!-- BOTTOM NAV -->
+  <div class="page-nav">
+    <span class="page-nav-label" id="page-label">Home · 1 of 5</span>
+    <div class="page-nav-btns">
+      <button class="btn-nav" id="btn-prev" onclick="step(-1)" disabled>← Back</button>
+      <button class="btn-nav primary" id="btn-next" onclick="step(1)">Next →</button>
+    </div>
+  </div>
+
+  <script>
+    const pages  = ['page-home', 'page-events', 'page-resources', 'page-calendar', 'page-alumni'];
+    const labels = ['Home', 'Events', 'Resources', 'Calendar', 'Alumni'];
+    let current  = 0;
+
+    function goTo(idx) {
+      document.getElementById(pages[current]).classList.remove('active');
+      document.getElementById('nav-' + current).classList.remove('active');
+      current = idx;
+      const el = document.getElementById(pages[current]);
+      el.classList.add('active');
+      el.scrollTop = 0;
+      document.getElementById('nav-' + current).classList.add('active');
+      document.getElementById('page-label').textContent = labels[current] + ' · ' + (current + 1) + ' of ' + pages.length;
+      document.getElementById('btn-prev').disabled = current === 0;
+      document.getElementById('btn-next').disabled = current === pages.length - 1;
+      document.getElementById('btn-next').textContent = current === pages.length - 1 ? '✓ Done' : 'Next →';
+    }
+
+    function step(dir) {
+      const n = current + dir;
+      if (n >= 0 && n < pages.length) goTo(n);
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') step(1);
+      if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   step(-1);
+    });
+
+    /* Events filter */
+    function filterEvents(status, btn) {
+      document.querySelectorAll('.ev-tab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.event-card').forEach(card => {
+        card.style.display = (status === 'all' || card.dataset.status === status) ? 'block' : 'none';
+      });
+    }
+
+    /* Registration toggle */
+    function toggleReg(id) {
+      const form = document.getElementById(id);
+      form.classList.toggle('visible');
+    }
+    function confirmReg(formId, confId) {
+      document.getElementById(formId).classList.remove('visible');
+      const conf = document.getElementById(confId);
+      conf.classList.add('visible');
+      conf.style.display = 'block';
+    }
+
+    /* Feedback toggle */
+    function toggleFeedback(id) {
+      const el = document.getElementById(id);
+      el.style.display = el.style.display === 'none' ? 'block' : 'none';
+    }
+
+    /* Resources filter */
+    function filterRes(cat, btn) {
+      document.querySelectorAll('.filter-row .filter-chip').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('#res-grid .res-card').forEach(card => {
+        const cats = card.dataset.cats || '';
+        card.style.display = (cat === 'all' || cats.includes(cat)) ? 'block' : 'none';
+      });
+    }
+
+    /* Alumni filter */
+    function filterAlumni(cat, btn) {
+      document.querySelectorAll('.alumni-filter .filter-chip').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('#alumni-grid .alumni-card').forEach(card => {
+        const c = card.dataset.cat || '';
+        card.style.display = (cat === 'all' || c.includes(cat)) ? 'block' : 'none';
+      });
+    }
+  </script>
+
+</body>
+</html>
