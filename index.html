@@ -22,410 +22,280 @@
       --sans: 'DM Sans', system-ui, sans-serif;
     }
 
-    html, body {
-      height: 100%;
-      background: var(--warm-bg);
-      color: var(--ink);
-      font-family: var(--sans);
-      font-size: 16px;
-      line-height: 1.6;
-      overflow: hidden;
-    }
+    html, body { height: 100%; background: var(--warm-bg); color: var(--ink); font-family: var(--sans); font-size: 16px; line-height: 1.6; overflow: hidden; }
 
-    /* ── NAV ── */
     nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 200;
-      background: rgba(250,247,242,0.95);
-      backdrop-filter: blur(8px);
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      background: rgba(250,247,242,0.95); backdrop-filter: blur(8px);
       border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 3rem;
-      height: 56px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 3rem; height: 56px;
     }
-    .nav-logo {
-      font-family: var(--lora);
-      font-size: 0.95rem;
-      color: var(--accent);
-      font-style: italic;
-      cursor: pointer;
-    }
-    .nav-links {
-      display: flex;
-      gap: 0.25rem;
-      list-style: none;
-    }
+    .nav-logo { font-family: var(--lora); font-size: 0.95rem; color: var(--accent); font-style: italic; cursor: pointer; }
+    .nav-links { display: flex; gap: 0.25rem; list-style: none; }
     .nav-links button {
-      background: none;
-      border: none;
-      font-family: var(--sans);
-      font-size: 0.8rem;
-      font-weight: 500;
-      color: var(--muted);
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      cursor: pointer;
-      padding: 0.4rem 0.9rem;
-      border-radius: 4px;
-      transition: color 0.2s, background 0.2s;
+      background: none; border: none; font-family: var(--sans); font-size: 0.8rem;
+      font-weight: 500; color: var(--muted); letter-spacing: 0.05em; text-transform: uppercase;
+      cursor: pointer; padding: 0.4rem 0.9rem; border-radius: 4px; transition: color 0.2s, background 0.2s;
     }
     .nav-links button:hover { color: var(--accent); background: var(--accent-lt); }
     .nav-links button.active { color: var(--accent); font-weight: 600; }
 
-    /* ── PAGE CONTAINER ── */
-    #app {
-      position: fixed;
-      top: 56px; left: 0; right: 0; bottom: 0;
-      overflow: hidden;
-    }
-
+    #app { position: fixed; top: 56px; left: 0; right: 0; bottom: 0; overflow: hidden; }
     .page {
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      overflow-y: auto;
-      padding: 4rem 3rem 6rem;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.4s ease, transform 0.4s ease;
-      transform: translateY(16px);
+      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      overflow-y: auto; padding: 4rem 3rem 6rem;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.4s ease, transform 0.4s ease; transform: translateY(16px);
     }
-    .page.active {
-      opacity: 1;
-      pointer-events: all;
-      transform: translateY(0);
-    }
-    .page-inner {
-      max-width: 780px;
-      margin: 0 auto;
-    }
+    .page.active { opacity: 1; pointer-events: all; transform: translateY(0); }
+    .page-inner { max-width: 780px; margin: 0 auto; }
 
-    /* ── BOTTOM NAV ── */
     .page-nav {
-      position: fixed;
-      bottom: 0; left: 0; right: 0;
-      z-index: 200;
-      background: rgba(250,247,242,0.95);
-      backdrop-filter: blur(8px);
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
+      background: rgba(250,247,242,0.95); backdrop-filter: blur(8px);
       border-top: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.75rem 3rem;
+      display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 3rem;
     }
-    .page-nav-label {
-      font-size: 0.78rem;
-      color: var(--muted);
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-    }
+    .page-nav-label { font-size: 0.78rem; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; }
     .page-nav-btns { display: flex; gap: 0.75rem; }
     .btn-nav {
-      background: none;
-      border: 1.5px solid var(--border);
-      color: var(--ink);
-      font-family: var(--sans);
-      font-size: 0.85rem;
-      font-weight: 500;
-      padding: 0.5rem 1.2rem;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: all 0.2s;
+      background: none; border: 1.5px solid var(--border); color: var(--ink);
+      font-family: var(--sans); font-size: 0.85rem; font-weight: 500;
+      padding: 0.5rem 1.2rem; border-radius: 4px; cursor: pointer; transition: all 0.2s;
     }
     .btn-nav:hover { border-color: var(--accent); color: var(--accent); }
-    .btn-nav.primary {
-      background: var(--accent);
-      border-color: var(--accent);
-      color: #fff;
-    }
+    .btn-nav.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
     .btn-nav.primary:hover { background: #a8521f; }
     .btn-nav:disabled { opacity: 0.3; cursor: default; }
 
-    /* ── TYPOGRAPHY ── */
-    .eyebrow {
-      font-size: 0.75rem;
-      font-weight: 500;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 0.9rem;
-    }
-    h1 {
-      font-family: var(--lora);
-      font-size: clamp(2.2rem, 4.5vw, 3.4rem);
-      line-height: 1.15;
-      font-weight: 600;
-      margin-bottom: 1.2rem;
-    }
+    .eyebrow { font-size: 0.75rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.9rem; }
+    h1 { font-family: var(--lora); font-size: clamp(2.2rem, 4.5vw, 3.4rem); line-height: 1.15; font-weight: 600; margin-bottom: 1.2rem; }
     h1 em { font-style: italic; color: var(--accent); }
-    h2 {
-      font-family: var(--lora);
-      font-size: clamp(1.6rem, 3vw, 2.2rem);
-      line-height: 1.2;
-      font-weight: 600;
-      margin-bottom: 0.75rem;
-    }
-    .lead {
-      font-size: 1.05rem;
-      color: var(--muted);
-      line-height: 1.8;
-      max-width: 600px;
-      margin-bottom: 2.5rem;
-    }
+    h2 { font-family: var(--lora); font-size: clamp(1.6rem, 3vw, 2.2rem); line-height: 1.2; font-weight: 600; margin-bottom: 0.75rem; }
+    .lead { font-size: 1.05rem; color: var(--muted); line-height: 1.8; max-width: 600px; margin-bottom: 2.5rem; }
 
-    /* ── BUTTONS ── */
     .btn-primary {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: var(--accent);
-      color: #fff;
-      border: none;
-      padding: 0.75rem 1.6rem;
-      border-radius: 4px;
-      font-family: var(--sans);
-      font-size: 0.9rem;
-      font-weight: 500;
-      cursor: pointer;
-      text-decoration: none;
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--accent); color: #fff; border: none;
+      padding: 0.75rem 1.6rem; border-radius: 4px; font-family: var(--sans);
+      font-size: 0.9rem; font-weight: 500; cursor: pointer; text-decoration: none;
       transition: background 0.2s, transform 0.15s;
     }
     .btn-primary:hover { background: #a8521f; transform: translateY(-1px); }
     .btn-ghost {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: transparent;
-      color: var(--accent);
-      border: 1.5px solid var(--accent);
-      padding: 0.72rem 1.6rem;
-      border-radius: 4px;
-      font-family: var(--sans);
-      font-size: 0.9rem;
-      font-weight: 500;
-      cursor: pointer;
-      text-decoration: none;
-      transition: background 0.2s;
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: transparent; color: var(--accent); border: 1.5px solid var(--accent);
+      padding: 0.72rem 1.6rem; border-radius: 4px; font-family: var(--sans);
+      font-size: 0.9rem; font-weight: 500; cursor: pointer; text-decoration: none; transition: background 0.2s;
     }
     .btn-ghost:hover { background: var(--accent-lt); }
 
     /* ── HOME ── */
-    #page-home .page-inner {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      min-height: calc(100vh - 120px);
-      padding-top: 2rem;
-    }
+    #page-home .page-inner { display: flex; flex-direction: column; justify-content: center; min-height: calc(100vh - 120px); padding-top: 2rem; }
     .home-actions { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 0.5rem; }
-    .home-divider {
-      width: 44px; height: 3px;
-      background: var(--accent);
-      border-radius: 2px;
-      margin: 2.5rem 0 0;
-    }
+    .home-divider { width: 44px; height: 3px; background: var(--accent); border-radius: 2px; margin: 2.5rem 0 0; }
 
     /* ── VISION HERO ── */
     .vision-hero {
-      background: var(--ink);
-      color: #fff;
-      border-radius: 10px;
-      padding: 2.5rem 2.5rem;
-      margin-bottom: 2rem;
-      position: relative;
-      overflow: hidden;
+      background: var(--ink); color: #fff; border-radius: 10px;
+      padding: 2.5rem; margin-bottom: 2rem; position: relative; overflow: hidden;
     }
-    .vision-hero::after {
-      content: '✦';
-      font-size: 12rem;
-      color: var(--accent);
-      opacity: 0.07;
-      position: absolute;
-      right: 1rem;
-      bottom: -2rem;
-      line-height: 1;
-      pointer-events: none;
-    }
-    .vision-hero h3 {
-      font-family: var(--lora);
-      font-size: 1.7rem;
-      font-weight: 600;
-      color: #fff;
-      margin-bottom: 0.8rem;
-    }
+    .vision-hero::after { content: '✦'; font-size: 12rem; color: var(--accent); opacity: 0.07; position: absolute; right: 1rem; bottom: -2rem; line-height: 1; pointer-events: none; }
+    .vision-hero h3 { font-family: var(--lora); font-size: 1.7rem; font-weight: 600; color: #fff; margin-bottom: 0.8rem; }
     .vision-hero h3 em { color: var(--accent); font-style: italic; }
     .vision-hero p { color: #c4bbb4; font-size: 0.97rem; line-height: 1.8; max-width: 540px; }
 
-    .unique-box {
-      background: var(--accent-lt);
-      border-radius: 8px;
-      padding: 1.5rem 1.8rem;
-      margin-bottom: 2.5rem;
-    }
-    .unique-box .label {
-      font-size: 0.72rem;
-      font-weight: 500;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 0.5rem;
-    }
-    .unique-box p {
-      font-size: 0.97rem;
-      color: var(--ink);
-      line-height: 1.75;
-    }
+    .unique-box { background: var(--accent-lt); border-radius: 8px; padding: 1.5rem 1.8rem; margin-bottom: 2.5rem; }
+    .unique-box .label { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem; }
+    .unique-box p { font-size: 0.97rem; color: var(--ink); line-height: 1.75; }
 
-    /* ── SKILL CARDS ── */
-    .skill-stack { display: flex; flex-direction: column; gap: 1.1rem; }
-
-    .skill-card {
-      background: var(--paper);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 1.3rem 1.6rem;
-      position: relative;
-      overflow: hidden;
-      transition: box-shadow 0.2s;
+    /* ── SKILL TABLE (new clean format) ── */
+    .skill-table { width: 100%; border-collapse: collapse; margin-top: 0.5rem; }
+    .skill-table thead tr { border-bottom: 2px solid var(--accent); }
+    .skill-table thead th {
+      font-family: var(--sans); font-size: 0.68rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
+      padding: 0.5rem 1rem 0.6rem; text-align: left;
     }
-    .skill-card:hover { box-shadow: 0 4px 18px rgba(0,0,0,0.07); }
-    .skill-card::before {
-      content: '';
-      position: absolute;
-      left: 0; top: 0; bottom: 0;
-      width: 3px;
-      background: var(--accent);
-      border-radius: 3px 0 0 3px;
+    .skill-table thead th:first-child { padding-left: 0; width: 28%; }
+    .skill-table thead th:nth-child(2) { width: 36%; }
+    .skill-table thead th:nth-child(3) { width: 36%; }
+    .skill-table tbody tr {
+      border-bottom: 1px solid var(--border);
+      transition: background 0.15s;
     }
-    .skill-card-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-      margin-bottom: 0.5rem;
+    .skill-table tbody tr:hover { background: rgba(192,98,42,0.03); }
+    .skill-table tbody tr:last-child { border-bottom: none; }
+    .skill-table td { padding: 0.95rem 1rem; vertical-align: top; font-size: 0.875rem; line-height: 1.55; }
+    .skill-table td:first-child { padding-left: 0; }
+    .skill-table .skill-name { font-family: var(--lora); font-weight: 600; font-size: 0.9rem; color: var(--ink); display: block; margin-bottom: 0.2rem; }
+    .skill-tag-sm {
+      display: inline-block; background: var(--tag-bg); color: var(--accent);
+      font-size: 0.62rem; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase;
+      padding: 0.1rem 0.45rem; border-radius: 3px;
     }
-    .skill-card h3 {
-      font-family: var(--lora);
-      font-size: 1rem;
-      font-weight: 600;
-    }
-    .skill-tag {
-      display: inline-block;
-      background: var(--tag-bg);
-      color: var(--accent);
-      font-size: 0.7rem;
-      font-weight: 500;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-      padding: 0.2rem 0.55rem;
-      border-radius: 3px;
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-    .skill-row {
-      display: flex;
-      gap: 0.5rem;
-      align-items: baseline;
-      font-size: 0.88rem;
-      line-height: 1.6;
-      color: var(--muted);
-      margin-bottom: 0.3rem;
-    }
-    .skill-row .arrow { color: var(--accent); flex-shrink: 0; font-size: 0.8rem; }
-    .skill-row strong { color: var(--ink); font-weight: 500; }
+    .skill-table td:nth-child(2) { color: var(--muted); border-left: 1px solid var(--border); }
+    .skill-table td:nth-child(3) { color: var(--ink); border-left: 1px solid var(--border); }
 
     /* ── IDEAS ── */
-    .ideas-stack { display: flex; flex-direction: column; gap: 1.2rem; }
-    .idea-card {
-      background: var(--paper);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 1.6rem 1.8rem;
-      transition: box-shadow 0.2s;
+    .ideas-stack { display: flex; flex-direction: column; gap: 2rem; }
+    .idea-card { background: var(--paper); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+    .idea-card-top { padding: 1.6rem 1.8rem 1.2rem; }
+    .idea-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem; }
+    .idea-num { font-family: var(--lora); font-size: 1.5rem; font-weight: 600; color: var(--accent-lt); line-height: 1; flex-shrink: 0; }
+    .idea-card h3 { font-family: var(--lora); font-size: 1.05rem; font-weight: 600; }
+    .idea-problem { font-size: 0.85rem; color: var(--accent); font-style: italic; margin-bottom: 0.9rem; }
+    .idea-bullets { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1rem; }
+    .idea-bullets li { font-size: 0.88rem; color: var(--muted); line-height: 1.6; padding-left: 1.2rem; position: relative; }
+    .idea-bullets li::before { content: '→'; position: absolute; left: 0; color: var(--accent); font-size: 0.8rem; }
+    .ai-badge { display: inline-flex; align-items: center; gap: 0.35rem; background: var(--tag-bg); color: var(--accent); font-size: 0.72rem; font-weight: 500; padding: 0.2rem 0.65rem; border-radius: 20px; }
+
+    /* prototype wrapper */
+    .proto-wrap {
+      border-top: 1px dashed var(--border);
+      background: var(--warm-bg);
+      padding: 1.2rem 1.8rem 1.4rem;
     }
-    .idea-card:hover { box-shadow: 0 4px 18px rgba(0,0,0,0.07); }
-    .idea-header {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin-bottom: 0.5rem;
+    .proto-label {
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 1rem;
+      display: flex; align-items: center; gap: 0.5rem;
     }
-    .idea-num {
-      font-family: var(--lora);
-      font-size: 1.5rem;
-      font-weight: 600;
-      color: var(--accent-lt);
-      line-height: 1;
-      flex-shrink: 0;
+    .proto-label::before { content: ''; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #4caf50; }
+
+    /* ── PROTO 1: EVENT REGISTRATION ── */
+    .proto-events { display: flex; flex-direction: column; gap: 0.75rem; }
+    .proto-event-card {
+      background: var(--paper); border: 1px solid var(--border); border-radius: 8px;
+      padding: 1rem 1.2rem;
     }
-    .idea-card h3 {
-      font-family: var(--lora);
-      font-size: 1.05rem;
-      font-weight: 600;
+    .proto-event-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; margin-bottom: 0.3rem; }
+    .proto-event-head h4 { font-family: var(--lora); font-size: 0.92rem; font-weight: 600; }
+    .proto-ev-badge { font-size: 0.65rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.15rem 0.5rem; border-radius: 3px; white-space: nowrap; }
+    .proto-ev-badge.upcoming { background: #e8f5e9; color: #388e3c; }
+    .proto-ev-badge.past { background: var(--tag-bg); color: var(--accent); }
+    .proto-event-meta { font-size: 0.78rem; color: var(--muted); margin-bottom: 0.65rem; display: flex; gap: 1rem; flex-wrap: wrap; }
+    .proto-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
+    .proto-btn {
+      background: var(--accent); color: #fff; border: none;
+      padding: 0.4rem 0.9rem; border-radius: 4px; font-family: var(--sans);
+      font-size: 0.78rem; font-weight: 500; cursor: pointer; transition: background 0.2s;
     }
-    .idea-problem {
-      font-size: 0.85rem;
-      color: var(--accent);
-      font-style: italic;
-      margin-bottom: 0.9rem;
+    .proto-btn:hover { background: #a8521f; }
+    .proto-btn.ghost {
+      background: none; color: var(--accent); border: 1.5px solid var(--accent-lt); padding: 0.38rem 0.85rem;
     }
-    .idea-bullets {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
+    .proto-btn.ghost:hover { background: var(--accent-lt); }
+    .proto-btn.outlook {
+      background: none; color: var(--muted); border: 1px solid var(--border); font-size: 0.72rem; padding: 0.35rem 0.7rem;
     }
-    .idea-bullets li {
-      font-size: 0.9rem;
-      color: var(--ink);
-      line-height: 1.6;
-      padding-left: 1.2rem;
-      position: relative;
+    .proto-btn.outlook:hover { border-color: #0078d4; color: #0078d4; }
+
+    .proto-form {
+      display: none; margin-top: 0.75rem; padding: 1rem; background: var(--warm-bg);
+      border: 1px solid var(--border); border-radius: 6px;
     }
-    .idea-bullets li::before {
-      content: '→';
-      position: absolute;
-      left: 0;
-      color: var(--accent);
-      font-size: 0.8rem;
+    .proto-form.visible { display: block; }
+    .proto-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.5rem; }
+    .proto-form-field { display: flex; flex-direction: column; gap: 0.2rem; }
+    .proto-form-field label { font-size: 0.72rem; color: var(--muted); font-weight: 500; }
+    .proto-form-field input, .proto-form-field select {
+      border: 1.5px solid var(--border); border-radius: 4px;
+      padding: 0.4rem 0.6rem; font-family: var(--sans); font-size: 0.82rem;
+      background: var(--paper); color: var(--ink); transition: border-color 0.2s;
     }
-    .ai-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      background: var(--tag-bg);
-      color: var(--accent);
-      font-size: 0.72rem;
-      font-weight: 500;
-      padding: 0.2rem 0.65rem;
-      border-radius: 20px;
-      margin-top: 0.9rem;
+    .proto-form-field input:focus, .proto-form-field select:focus { outline: none; border-color: var(--accent); }
+    .proto-form-actions { display: flex; gap: 0.5rem; margin-top: 0.6rem; }
+    .proto-confirm { display: none; margin-top: 0.6rem; padding: 0.6rem 0.8rem; background: #e8f5e9; border-radius: 4px; font-size: 0.82rem; color: #2e7d32; }
+    .proto-confirm.visible { display: block; }
+
+    .proto-feedback-form { display: none; margin-top: 0.75rem; padding: 1rem; background: var(--warm-bg); border: 1px solid var(--border); border-radius: 6px; }
+    .proto-feedback-form.visible { display: block; }
+    .star-row { display: flex; gap: 0.3rem; margin-bottom: 0.6rem; }
+    .star { font-size: 1.3rem; cursor: pointer; color: #e0d0c8; transition: color 0.15s; }
+    .star.lit { color: var(--accent); }
+    .proto-feedback-form textarea {
+      width: 100%; border: 1.5px solid var(--border); border-radius: 4px;
+      padding: 0.5rem 0.7rem; font-family: var(--sans); font-size: 0.82rem;
+      background: var(--paper); color: var(--ink); resize: vertical; min-height: 60px;
+      transition: border-color 0.2s;
     }
+    .proto-feedback-form textarea:focus { outline: none; border-color: var(--accent); }
+
+    /* ── PROTO 2: CALENDAR ── */
+    .proto-cal-layout { display: grid; grid-template-columns: 1fr 200px; gap: 1rem; }
+    .proto-cal { background: var(--paper); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+    .proto-cal-header { display: flex; align-items: center; justify-content: space-between; padding: 0.7rem 1rem; border-bottom: 1px solid var(--border); }
+    .proto-cal-header h4 { font-family: var(--lora); font-size: 0.9rem; font-weight: 600; }
+    .proto-cal-nav { background: none; border: 1px solid var(--border); color: var(--muted); padding: 0.2rem 0.55rem; border-radius: 3px; cursor: pointer; font-size: 0.85rem; }
+    .proto-cal-days { display: grid; grid-template-columns: repeat(7, 1fr); background: var(--warm-bg); border-bottom: 1px solid var(--border); }
+    .proto-cal-day-name { text-align: center; font-size: 0.62rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); padding: 0.35rem 0; }
+    .proto-cal-cells { display: grid; grid-template-columns: repeat(7, 1fr); }
+    .proto-cal-cell { min-height: 48px; padding: 0.3rem; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .proto-cal-cell:nth-child(7n) { border-right: none; }
+    .proto-cell-num { font-size: 0.72rem; font-weight: 500; color: var(--ink); width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
+    .proto-cal-cell.today .proto-cell-num { background: var(--accent); color: #fff; }
+    .proto-cal-cell.other .proto-cell-num { color: #ccc; }
+    .proto-cal-event { display: block; margin-top: 2px; font-size: 0.56rem; color: var(--accent); background: var(--accent-lt); border-radius: 2px; padding: 0 3px; line-height: 1.7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .proto-cal-event.conflict { background: #fff3e0; color: #e65100; }
+
+    .proto-upcoming h4 { font-family: var(--lora); font-size: 0.85rem; font-weight: 600; margin-bottom: 0.65rem; }
+    .proto-up-item { padding: 0.6rem 0.75rem; background: var(--paper); border: 1px solid var(--border); border-radius: 6px; margin-bottom: 0.5rem; }
+    .proto-up-date { font-size: 0.65rem; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.15rem; }
+    .proto-up-title { font-size: 0.8rem; font-weight: 500; color: var(--ink); margin-bottom: 0.15rem; }
+    .proto-up-type { font-size: 0.7rem; color: var(--muted); margin-bottom: 0.4rem; }
+    .conflict-flag { font-size: 0.65rem; color: #e65100; background: #fff3e0; padding: 0.1rem 0.4rem; border-radius: 3px; display: inline-block; margin-bottom: 0.4rem; }
+
+    /* ── PROTO 3: KNOWLEDGE HUB ── */
+    .proto-search-row { display: flex; gap: 0.5rem; margin-bottom: 0.75rem; }
+    .proto-search-row input {
+      flex: 1; border: 1.5px solid var(--border); border-radius: 6px;
+      padding: 0.45rem 0.8rem; font-family: var(--sans); font-size: 0.82rem;
+      background: var(--paper); color: var(--ink);
+    }
+    .proto-search-row input:focus { outline: none; border-color: var(--accent); }
+    .proto-filter-row { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.9rem; }
+    .proto-chip {
+      background: none; border: 1.5px solid var(--border); color: var(--muted);
+      font-family: var(--sans); font-size: 0.72rem; font-weight: 500;
+      padding: 0.2rem 0.65rem; border-radius: 20px; cursor: pointer; transition: all 0.2s;
+    }
+    .proto-chip.active, .proto-chip:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-lt); }
+    .proto-hub-list { display: flex; flex-direction: column; gap: 0.6rem; }
+    .proto-hub-card {
+      background: var(--paper); border: 1px solid var(--border); border-radius: 7px;
+      padding: 0.85rem 1rem; cursor: pointer; transition: box-shadow 0.2s;
+    }
+    .proto-hub-card:hover { box-shadow: 0 3px 12px rgba(0,0,0,0.07); }
+    .proto-hub-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.75rem; }
+    .proto-hub-head h4 { font-family: var(--lora); font-size: 0.88rem; font-weight: 600; }
+    .proto-hub-meta { font-size: 0.72rem; color: var(--muted); margin-top: 0.2rem; display: flex; gap: 0.8rem; flex-wrap: wrap; }
+    .proto-hub-tags { display: flex; gap: 0.3rem; flex-wrap: wrap; margin-top: 0.5rem; }
+    .proto-hub-tag { background: var(--tag-bg); color: var(--accent); font-size: 0.62rem; font-weight: 500; padding: 0.1rem 0.4rem; border-radius: 3px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .proto-hub-expand {
+      display: none; margin-top: 0.75rem; padding-top: 0.75rem;
+      border-top: 1px dashed var(--border); font-size: 0.82rem; color: var(--muted); line-height: 1.6;
+    }
+    .proto-hub-expand.open { display: block; }
+    .proto-score { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.72rem; background: #e8f5e9; color: #2e7d32; padding: 0.12rem 0.45rem; border-radius: 3px; white-space: nowrap; }
 
     /* ── FOOTER ── */
-    .footer-note {
-      text-align: center;
-      padding: 3rem 0 1rem;
-      font-size: 0.85rem;
-      color: var(--muted);
-      font-style: italic;
-      border-top: 1px solid var(--border);
-      margin-top: 3rem;
-    }
+    .footer-note { text-align: center; padding: 3rem 0 1rem; font-size: 0.85rem; color: var(--muted); font-style: italic; border-top: 1px solid var(--border); margin-top: 3rem; }
     .footer-note strong { color: var(--accent); font-style: normal; }
 
     @media (max-width: 640px) {
       nav, .page-nav { padding: 0 1.2rem; }
       .page { padding: 2rem 1.2rem 5rem; }
       .nav-links button { padding: 0.4rem 0.5rem; font-size: 0.72rem; }
+      .skill-table thead th:nth-child(2), .skill-table td:nth-child(2) { display: none; }
+      .proto-cal-layout { grid-template-columns: 1fr; }
+      .proto-form-row { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
 
-  <!-- TOP NAV -->
   <nav>
     <span class="nav-logo" onclick="goTo(0)">BTC · Events Coordinator</span>
     <ul class="nav-links">
@@ -435,24 +305,22 @@
     </ul>
   </nav>
 
-  <!-- PAGES -->
   <div id="app">
 
     <!-- HOME -->
     <div class="page active" id="page-home">
       <div class="page-inner">
         <p class="eyebrow">Applying for · Events Coordinator · Business Technology Club · ISB</p>
-        <h1>Hi, I’m <em>Uditi</em>.<br>I run things so others<br>can show up.</h1>
+        <h1>Hi, I'm <em>Uditi</em>.<br>I run things so others<br>can show up.</h1>
         <p class="lead">I spent four years coordinating high-impact technology initiatives where success depended on planning, communication, and flawless execution. I want to bring those same skills to creating memorable experiences at BTC.</p>
         <div class="home-actions">
           <button class="btn-primary" onclick="goTo(1)">See my case →</button>
           <a href="Resume.pdf" download class="btn-ghost">↓ Download Resume</a>
         </div>
         <div class="home-divider"></div>
-
         <footer class="footer-note" style="margin-top:3rem; border-top: none;">
           <strong>Built this to show, not just tell.</strong><br>
-          Because if I’m applying to own events end to end, the application should feel like one.
+          Because if I'm applying to own events end to end, the application should feel like one.
         </footer>
       </div>
     </div>
@@ -463,84 +331,64 @@
 
         <div class="vision-hero">
           <h3>My vision: <em>Breaking In</em></h3>
-          <p>An initiative to demystify product management for everyone at ISB who doesn’t come from a PM or engineering background — and show them that’s actually an advantage, not a gap. I want BTC to be the place that builds that bridge.</p>
+          <p>An initiative to demystify product management for everyone at ISB who doesn't come from a PM or engineering background — and show them that's actually an advantage, not a gap. I want BTC to be the place that builds that bridge.</p>
         </div>
 
         <div class="unique-box">
-          <p class="label">Why I’m the right person to run this</p>
-          <p>I’m not a PM or an engineer — and that’s the point. I’ll notice the things that those with technical backgrounds might take for granted: the jargon that alienates people, the assumed context that never gets explained, the unwritten rules that make the path look harder than it is. My goal is to make those visible, and then dismantle them. Someone who’s been on the outside and found their way in is often better placed to build the door for others.</p>
+          <p class="label">Why I'm the right person to run this</p>
+          <p>I'm not a PM or an engineer — and that's the point. I'll notice the things that those with technical backgrounds might take for granted: the jargon that alienates people, the assumed context that never gets explained, the unwritten rules that make the path look harder than it is. My goal is to make those visible, and then dismantle them. Someone who's been on the outside and found their way in is often better placed to build the door for others.</p>
         </div>
 
         <p class="eyebrow">Why Me?</p>
-        <h2 style="margin-bottom:0.5rem;">Skills that map<br>to what BTC needs</h2>
-        <p class="lead" style="margin-bottom:1.8rem;">PGP · Targeting Product Management · 4 years in tech operations</p>
+        <h2 style="margin-bottom:0.5rem;">Skills that map to what BTC needs</h2>
+        <p class="lead" style="margin-bottom:1.5rem;">PGP · Targeting Product Management · 4 years in tech operations</p>
 
-        <div class="skill-stack">
-
-          <div class="skill-card">
-            <div class="skill-card-header">
-              <h3>End-to-End Project Execution</h3>
-              <span class="skill-tag">Operations</span>
-            </div>
-            <div class="skill-row"><span class="arrow">→</span><span><strong>What I bring:</strong> Led large-scale, multi-phase technology initiatives across thousands of users — from planning through delivery, with zero room for “we’ll figure it out on the day.”</span></div>
-            <div class="skill-row"><span class="arrow">→</span><span><strong>BTC need:</strong> End-to-end event ownership — planning, logistics, AV, venue, and delivery without letting details slip.</span></div>
-          </div>
-
-          <div class="skill-card">
-            <div class="skill-card-header">
-              <h3>Working Under Pressure</h3>
-              <span class="skill-tag">Execution</span>
-            </div>
-            <div class="skill-row"><span class="arrow">→</span><span><strong>What I bring:</strong> Managed high-stakes, time-critical situations where delays had real consequences — and learned to stay calm, triage fast, and keep things moving.</span></div>
-            <div class="skill-row"><span class="arrow">→</span><span><strong>BTC need:</strong> On-the-day event management when things don’t go to plan — because they won’t.</span></div>
-          </div>
-
-          <div class="skill-card">
-            <div class="skill-card-header">
-              <h3>Stakeholder & Customer Management</h3>
-              <span class="skill-tag">People</span>
-            </div>
-            <div class="skill-row"><span class="arrow">→</span><span><strong>What I bring:</strong> Served as the primary point of contact for thousands of users across a large, demanding, multi-timezone workforce — fielding requests, managing expectations, and being the person people could rely on.</span></div>
-            <div class="skill-row"><span class="arrow">→</span><span><strong>BTC need:</strong> Coordinating with CAPD, college authorities, attendees, and other clubs — being reachable, responsive, and dependable.</span></div>
-          </div>
-
-          <div class="skill-card">
-            <div class="skill-card-header">
-              <h3>Vendor Management</h3>
-              <span class="skill-tag">Coordination</span>
-            </div>
-            <div class="skill-row"><span class="arrow">→</span><span><strong>What I bring:</strong> Managed external vendor relationships — negotiating, tracking deliverables, and holding them accountable to timelines and quality standards.</span></div>
-            <div class="skill-row"><span class="arrow">→</span><span><strong>BTC need:</strong> Sourcing and managing speakers, venues, catering, and any third-party requirements for events.</span></div>
-          </div>
-
-          <div class="skill-card">
-            <div class="skill-card-header">
-              <h3>Communication</h3>
-              <span class="skill-tag">People</span>
-            </div>
-            <div class="skill-row"><span class="arrow">→</span><span><strong>What I bring:</strong> Regularly communicated across levels — from executives to end users — translating technical complexity into clear, actionable information.</span></div>
-            <div class="skill-row"><span class="arrow">→</span><span><strong>BTC need:</strong> Liaising with Marketing & Comms, promoting events clearly, and being the coherent voice of BTC externally.</span></div>
-          </div>
-
-          <div class="skill-card">
-            <div class="skill-card-header">
-              <h3>Cross-Functional Coordination</h3>
-              <span class="skill-tag">Collaboration</span>
-            </div>
-            <div class="skill-row"><span class="arrow">→</span><span><strong>What I bring:</strong> Led initiatives spanning multiple teams — legal, infrastructure, operations, and leadership — where progress required connecting the dots across functions with no shared reporting line.</span></div>
-            <div class="skill-row"><span class="arrow">→</span><span><strong>BTC need:</strong> Working across BTC sub-teams and other clubs so events land cohesively, not in isolation.</span></div>
-          </div>
-
-          <div class="skill-card">
-            <div class="skill-card-header">
-              <h3>Feedback Systems & Continuous Improvement</h3>
-              <span class="skill-tag">Process</span>
-            </div>
-            <div class="skill-row"><span class="arrow">→</span><span><strong>What I bring:</strong> Built structured feedback loops to capture what worked, what broke, and what the next team needed to know — so institutional knowledge didn’t disappear at every transition.</span></div>
-            <div class="skill-row"><span class="arrow">→</span><span><strong>BTC need:</strong> A post-event feedback process that’s actually read, acted on, and carried forward.</span></div>
-          </div>
-
-        </div>
+        <table class="skill-table">
+          <thead>
+            <tr>
+              <th>Skill</th>
+              <th>My background</th>
+              <th>For BTC</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="skill-name">Project Execution</span><span class="skill-tag-sm">Operations</span></td>
+              <td>Led large-scale, multi-phase technology initiatives across thousands of users — tight timelines, hard deadlines, no room to improvise.</td>
+              <td>End-to-end event ownership: planning, logistics, AV, venue, and delivery without letting details slip.</td>
+            </tr>
+            <tr>
+              <td><span class="skill-name">Working Under Pressure</span><span class="skill-tag-sm">Execution</span></td>
+              <td>Managed high-stakes, time-critical situations where delays had real consequences — stayed calm, triaged fast, kept things moving.</td>
+              <td>On-the-day event management when things don't go to plan — because they won't.</td>
+            </tr>
+            <tr>
+              <td><span class="skill-name">Stakeholder Management</span><span class="skill-tag-sm">People</span></td>
+              <td>Primary point of contact for thousands of users across a large, multi-timezone workforce — fielding requests, managing expectations simultaneously.</td>
+              <td>Coordinating with CAPD, college authorities, and other clubs — being reachable, responsive, and reliable.</td>
+            </tr>
+            <tr>
+              <td><span class="skill-name">Vendor Management</span><span class="skill-tag-sm">Coordination</span></td>
+              <td>Managed external vendor relationships — negotiated, tracked deliverables, held them to timelines and quality standards.</td>
+              <td>Sourcing and managing speakers, venues, catering, and any third-party requirements for events.</td>
+            </tr>
+            <tr>
+              <td><span class="skill-name">Communication</span><span class="skill-tag-sm">People</span></td>
+              <td>Communicated across levels — from executives to end users — translating complexity into clear, actionable information.</td>
+              <td>Promoting events, liaising with Marketing & Comms, and being the coherent external voice of BTC.</td>
+            </tr>
+            <tr>
+              <td><span class="skill-name">Cross-Functional Coordination</span><span class="skill-tag-sm">Collaboration</span></td>
+              <td>Led initiatives spanning multiple teams — legal, infrastructure, ops, leadership — connecting dots across functions with no shared reporting line.</td>
+              <td>Working across BTC sub-teams and other clubs so events land cohesively, not in silos.</td>
+            </tr>
+            <tr>
+              <td><span class="skill-name">Feedback & Iteration</span><span class="skill-tag-sm">Process</span></td>
+              <td>Built structured feedback loops so institutional knowledge didn't disappear at every team transition — what worked, what broke, what to carry forward.</td>
+              <td>A post-event feedback process that's actually read, acted on, and passed to the next coordinator.</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
 
@@ -548,67 +396,286 @@
     <div class="page" id="page-ideas">
       <div class="page-inner">
         <p class="eyebrow">Page 02 — Ideas</p>
-        <h2>Three things I’d build<br>as Events Coordinator</h2>
-        <p class="lead">
-          Each one solves a real BTC problem — and each one leverages technology to do it faster and smarter than a spreadsheet ever could.
-        </p>
+        <h2>Three things I'd build<br>as Events Coordinator</h2>
+        <p class="lead">Each one solves a real BTC problem. Click into the live prototypes below each idea — they're functional.</p>
 
         <div class="ideas-stack">
 
+          <!-- IDEA 1: EVENT REGISTRATION & FEEDBACK -->
           <div class="idea-card">
-            <div class="idea-header">
-              <span class="idea-num">01</span>
-              <h3>BTC Member Portal</h3>
+            <div class="idea-card-top">
+              <div class="idea-header">
+                <span class="idea-num">01</span>
+                <h3>Event Registration & Feedback</h3>
+              </div>
+              <p class="idea-problem">Problem: sign-ups are scattered, feedback forms go unfilled, and there's no single place members stay plugged in.</p>
+              <ul class="idea-bullets">
+                <li>Members browse upcoming sessions, register in one click, and add events to their Outlook or Google calendar.</li>
+                <li>Post-event, a feedback form surfaces automatically — ratings and comments feed into a committee dashboard.</li>
+                <li>AI summarises feedback themes after each event so the debrief takes minutes, not hours.</li>
+              </ul>
+              <span class="ai-badge">🤖 AI-summarised feedback after every event</span>
             </div>
-            <p class="idea-problem">Problem: event sign-ups are scattered, feedback goes nowhere, and members have no single place to stay plugged in.</p>
-            <ul class="idea-bullets">
-              <li>A dedicated BTC events hub — members can browse upcoming sessions, register in one click, and add events directly to their calendar (Outlook or Google).</li>
-              <li>Post-event, a structured feedback form is automatically surfaced. Responses feed into a live dashboard visible to the full committee.</li>
-              <li>Built on the same model as this site — lightweight, no-install, works on any device. I’ve already built a version of this for WIB.</li>
-            </ul>
-            <span class="ai-badge">🤖 AI-summarised feedback after every event</span>
+            <div class="proto-wrap">
+              <p class="proto-label">Live prototype</p>
+              <div class="proto-events">
+
+                <div class="proto-event-card">
+                  <div class="proto-event-head">
+                    <h4>AI in Finance: Tools Every Business Professional Needs</h4>
+                    <span class="proto-ev-badge upcoming">Upcoming</span>
+                  </div>
+                  <div class="proto-event-meta">
+                    <span>📅 28 Jun 2026</span>
+                    <span>⏰ 4:00 – 6:00 PM</span>
+                    <span>📍 Auditorium B, ISB</span>
+                  </div>
+                  <div class="proto-actions">
+                    <button class="proto-btn" onclick="toggleProtoForm('pf1')">Register Now</button>
+                    <button class="proto-btn outlook" onclick="dlIcs('AI in Finance: Tools Every Business Professional Needs','20260628T160000','20260628T180000','Auditorium B, ISB')">📅 Add to Calendar</button>
+                  </div>
+                  <div class="proto-form" id="pf1">
+                    <div class="proto-form-row">
+                      <div class="proto-form-field"><label>Full Name</label><input type="text" placeholder="Your name" /></div>
+                      <div class="proto-form-field"><label>Roll No.</label><input type="text" placeholder="ISB2025XXX" /></div>
+                    </div>
+                    <div class="proto-form-row">
+                      <div class="proto-form-field"><label>Programme</label><select><option>PGP</option><option>PGPpro</option><option>MFAB</option></select></div>
+                      <div class="proto-form-field"><label>How did you hear?</label><select><option>BTC newsletter</option><option>WhatsApp</option><option>Friend</option></select></div>
+                    </div>
+                    <div class="proto-form-actions">
+                      <button class="proto-btn" onclick="confirmProto('pf1','pc1')">Confirm</button>
+                      <button class="proto-btn ghost" onclick="toggleProtoForm('pf1')">Cancel</button>
+                    </div>
+                    <div class="proto-confirm" id="pc1">✓ Registered! A calendar invite has been sent to your ISB email.</div>
+                  </div>
+                </div>
+
+                <div class="proto-event-card">
+                  <div class="proto-event-head">
+                    <h4>From Consulting to Product: Making the Pivot</h4>
+                    <span class="proto-ev-badge past">Completed</span>
+                  </div>
+                  <div class="proto-event-meta">
+                    <span>📅 10 May 2026</span>
+                    <span>👥 74 attendees</span>
+                    <span>🎙 Panel · 3 speakers</span>
+                  </div>
+                  <div class="proto-actions">
+                    <button class="proto-btn ghost" onclick="toggleFeedbackForm('ff1')">Leave Feedback</button>
+                  </div>
+                  <div class="proto-feedback-form" id="ff1">
+                    <p style="font-size:0.78rem;color:var(--muted);margin-bottom:0.5rem;">How would you rate this session?</p>
+                    <div class="star-row" id="stars1">
+                      <span class="star" onclick="rateStar('stars1',1)">★</span>
+                      <span class="star" onclick="rateStar('stars1',2)">★</span>
+                      <span class="star" onclick="rateStar('stars1',3)">★</span>
+                      <span class="star" onclick="rateStar('stars1',4)">★</span>
+                      <span class="star" onclick="rateStar('stars1',5)">★</span>
+                    </div>
+                    <textarea placeholder="What worked well? What would you change?"></textarea>
+                    <div class="proto-form-actions" style="margin-top:0.5rem;">
+                      <button class="proto-btn" onclick="confirmFeedback('ff1','fc1')">Submit</button>
+                    </div>
+                    <div class="proto-confirm" id="fc1">✓ Thanks! Your feedback shapes our next event.</div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
           </div>
 
+          <!-- IDEA 2: BTC CALENDAR -->
           <div class="idea-card">
-            <div class="idea-header">
-              <span class="idea-num">02</span>
-              <h3>BTC Knowledge Hub</h3>
+            <div class="idea-card-top">
+              <div class="idea-header">
+                <span class="idea-num">02</span>
+                <h3>BTC Events Calendar</h3>
+              </div>
+              <p class="idea-problem">Problem: clubs plan in silos. Clashes happen. High-demand weeks get overloaded. Members miss things they'd have attended.</p>
+              <ul class="idea-bullets">
+                <li>A shared calendar showing BTC sessions alongside major club events, exam weeks, and CAPD touchpoints.</li>
+                <li>Members add any event to their Outlook or Google calendar in one click.</li>
+                <li>AI flags scheduling conflicts before they're locked in and highlights better windows based on historical attendance patterns.</li>
+              </ul>
+              <span class="ai-badge">🤖 AI conflict detection & scheduling suggestions</span>
             </div>
-            <p class="idea-problem">Problem: every cohort starts from zero. Speaker contacts, venue notes, what worked — gone at handoff.</p>
-            <ul class="idea-bullets">
-              <li>A searchable repository of all past BTC events — recaps, feedback themes, speaker details, venue notes, and cross-club commitments.</li>
-              <li>AI auto-tags and summarises entries after each event so the log stays current without extra admin effort.</li>
-              <li>Any future EC can ask “what did we do for the last fintech session?” and get an actual answer — not a blank Drive folder.</li>
-            </ul>
-            <span class="ai-badge">🤖 AI-powered tagging & summarisation</span>
+            <div class="proto-wrap">
+              <p class="proto-label">Live prototype</p>
+              <div class="proto-cal-layout">
+                <div class="proto-cal">
+                  <div class="proto-cal-header">
+                    <button class="proto-cal-nav">‹</button>
+                    <h4>June 2026</h4>
+                    <button class="proto-cal-nav">›</button>
+                  </div>
+                  <div class="proto-cal-days">
+                    <div class="proto-cal-day-name">Su</div><div class="proto-cal-day-name">Mo</div><div class="proto-cal-day-name">Tu</div><div class="proto-cal-day-name">We</div><div class="proto-cal-day-name">Th</div><div class="proto-cal-day-name">Fr</div><div class="proto-cal-day-name">Sa</div>
+                  </div>
+                  <div class="proto-cal-cells">
+                    <div class="proto-cal-cell other"><span class="proto-cell-num">1</span></div>
+                    <div class="proto-cal-cell"><span class="proto-cell-num">2</span></div>
+                    <div class="proto-cal-cell"><span class="proto-cell-num">3</span></div>
+                    <div class="proto-cal-cell"><span class="proto-cell-num">4</span></div>
+                    <div class="proto-cal-cell"><span class="proto-cell-num">5</span></div>
+                    <div class="proto-cal-cell"><span class="proto-cell-num">6</span></div>
+                    <div class="proto-cal-cell"><span class="proto-cell-num">7</span></div>
+                    <div class="proto-cal-cell"><span class="proto-cell-num">8</span></div>
+                    <div class="proto-cal-cell"><span class="proto-cell-num">9</span></div>
+                    <div class="proto-cal-cell"><span class="proto-cell-num">10</span></div>
+                    <div class="proto-cal-cell"><span class="proto-cell-num">11</span></div>
+                    <div class="proto-cal-cell today"><span class="proto-cell-num">12</span></div>
+                    <div class="proto-cal-cell"><span class="proto-cell-num">13</span></div>
+                    <div class="proto-cal-cell"><span class="proto-cell-num">14</span></div>
+                    <div class="proto-cal-cell"><span class="proto-cell-num">15</span></div>
+                    <div class="proto-cal-cell"><span class="proto-cell-num">16</span></div>
+                    <div class="proto-cal-cell"><span class="proto-cell-num">17</span></div>
+                    <div class="proto-cal-cell"><span class="proto-cell-num">18</span></div>
+                    <div class="proto-cal-cell"><span class="proto-cell-num">19</span></div>
+                    <div class="proto-cal-cell"><span class="proto-cell-num">20</span></div>
+                    <div class="proto-cal-cell"><span class="proto-cell-num">21</span></div>
+                    <div class="proto-cal-cell"><span class="proto-cell-num">22</span><span class="proto-cal-event">AI in Finance</span></div>
+                    <div class="proto-cal-cell"><span class="proto-cell-num">23</span></div>
+                    <div class="proto-cal-cell"><span class="proto-cell-num">24</span></div>
+                    <div class="proto-cal-cell"><span class="proto-cell-num">25</span><span class="proto-cal-event conflict">⚠ Clash</span></div>
+                    <div class="proto-cal-cell"><span class="proto-cell-num">26</span></div>
+                    <div class="proto-cal-cell"><span class="proto-cell-num">27</span><span class="proto-cal-event">Office Hours</span></div>
+                    <div class="proto-cal-cell"><span class="proto-cell-num">28</span></div>
+                    <div class="proto-cal-cell"><span class="proto-cell-num">29</span></div>
+                    <div class="proto-cal-cell"><span class="proto-cell-num">30</span></div>
+                    <div class="proto-cal-cell other"><span class="proto-cell-num">1</span></div>
+                    <div class="proto-cal-cell other"><span class="proto-cell-num">2</span></div>
+                    <div class="proto-cal-cell other"><span class="proto-cell-num">3</span><span class="proto-cal-event">Fintech Talk</span></div>
+                    <div class="proto-cal-cell other"><span class="proto-cell-num">4</span></div>
+                    <div class="proto-cal-cell other"><span class="proto-cell-num">5</span><span class="proto-cal-event">PM Workshop</span></div>
+                  </div>
+                </div>
+                <div class="proto-upcoming">
+                  <h4>Next Up</h4>
+                  <div class="proto-up-item">
+                    <div class="proto-up-date">22 Jun · 4:00 PM</div>
+                    <div class="proto-up-title">AI in Finance</div>
+                    <div class="proto-up-type">Workshop · Auditorium B</div>
+                    <button class="proto-btn outlook" style="font-size:0.65rem;padding:0.2rem 0.55rem;" onclick="dlIcs('BTC: AI in Finance','20260622T160000','20260622T180000','Auditorium B, ISB')">📅 Add to Calendar</button>
+                  </div>
+                  <div class="proto-up-item">
+                    <div class="proto-up-date">25 Jun · 5:00 PM</div>
+                    <div class="proto-up-title">Startup Panel</div>
+                    <div class="conflict-flag">⚠ Clash with Finance Club</div>
+                    <button class="proto-btn outlook" style="font-size:0.65rem;padding:0.2rem 0.55rem;" onclick="dlIcs('BTC: Startup Panel','20260625T170000','20260625T190000','ISB Campus')">📅 Add to Calendar</button>
+                  </div>
+                  <div class="proto-up-item">
+                    <div class="proto-up-date">27 Jun · 12:30 PM</div>
+                    <div class="proto-up-title">EC Office Hours</div>
+                    <div class="proto-up-type">Drop-in · Open to all</div>
+                    <button class="proto-btn outlook" style="font-size:0.65rem;padding:0.2rem 0.55rem;" onclick="dlIcs('BTC: EC Office Hours','20260627T123000','20260627T133000','ISB Campus')">📅 Add to Calendar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
+          <!-- IDEA 3: KNOWLEDGE HUB -->
           <div class="idea-card">
-            <div class="idea-header">
-              <span class="idea-num">03</span>
-              <h3>Cross-Club Unified Calendar</h3>
+            <div class="idea-card-top">
+              <div class="idea-header">
+                <span class="idea-num">03</span>
+                <h3>BTC Knowledge Hub</h3>
+              </div>
+              <p class="idea-problem">Problem: every cohort starts from zero. Speaker contacts, venue notes, what worked — gone at handoff.</p>
+              <ul class="idea-bullets">
+                <li>A searchable repository of all past BTC events — recaps, feedback themes, speaker details, venue notes, and cross-club commitments.</li>
+                <li>AI auto-tags and summarises entries after each event so the log stays current without extra admin effort.</li>
+                <li>Any future EC can find exactly what they need — not a blank Drive folder and a hope that someone remembers.</li>
+              </ul>
+              <span class="ai-badge">🤖 AI-powered tagging & summarisation</span>
             </div>
-            <p class="idea-problem">Problem: clubs plan in silos. Clashes happen. High-demand weeks get overloaded. Students miss events they’d have attended.</p>
-            <ul class="idea-bullets">
-              <li>A shared calendar aggregating BTC sessions alongside major club events, exam weeks, and CAPD touchpoints.</li>
-              <li>AI flags scheduling conflicts before they’re locked in and suggests better windows based on historical attendance data.</li>
-              <li>Shareable and visible to the full cohort — doubles as a marketing asset showing BTC’s presence across the year.</li>
-            </ul>
-            <span class="ai-badge">🤖 AI conflict detection & scheduling suggestions</span>
+            <div class="proto-wrap">
+              <p class="proto-label">Live prototype</p>
+              <div class="proto-search-row">
+                <input type="text" id="hub-search" placeholder="Search events, speakers, topics…" oninput="filterHub(this.value)" />
+              </div>
+              <div class="proto-filter-row">
+                <button class="proto-chip active" onclick="filterHubCat('all',this)">All</button>
+                <button class="proto-chip" onclick="filterHubCat('fintech',this)">Fintech</button>
+                <button class="proto-chip" onclick="filterHubCat('product',this)">Product</button>
+                <button class="proto-chip" onclick="filterHubCat('leadership',this)">Leadership</button>
+                <button class="proto-chip" onclick="filterHubCat('ai',this)">AI & Tech</button>
+              </div>
+              <div class="proto-hub-list" id="hub-list">
+
+                <div class="proto-hub-card" data-cat="product leadership" data-search="consulting product pivot panel speakers" onclick="toggleHub(this)">
+                  <div class="proto-hub-head">
+                    <div>
+                      <h4>From Consulting to Product: Making the Pivot</h4>
+                      <div class="proto-hub-meta"><span>📅 10 May 2026</span><span>👥 74 attendees</span><span>🎙 Panel · 3 speakers</span></div>
+                    </div>
+                    <span class="proto-score">⭐ 4.6 / 5</span>
+                  </div>
+                  <div class="proto-hub-tags">
+                    <span class="proto-hub-tag">Product</span><span class="proto-hub-tag">Leadership</span><span class="proto-hub-tag">Careers</span>
+                  </div>
+                  <div class="proto-hub-expand">
+                    <strong>Recap:</strong> Three ISB alumni — from McKinsey, EY, and a Big 4 firm — shared their pivot stories. Key theme: domain expertise from consulting is an asset, not a gap.<br><br>
+                    <strong>Top feedback:</strong> "More time for Q&A", "Would attend a follow-up on PM interviews"<br><br>
+                    <strong>Venue:</strong> AC3-105 · AV: no issues · Attendance rate: 94%<br>
+                    <strong>Speaker contact:</strong> Rohan Mehta · rohan.m@isb.edu
+                  </div>
+                </div>
+
+                <div class="proto-hub-card" data-cat="fintech ai" data-search="blockchain crypto fintech speaker workshop" onclick="toggleHub(this)">
+                  <div class="proto-hub-head">
+                    <div>
+                      <h4>Blockchain Beyond the Hype: Practical Use Cases</h4>
+                      <div class="proto-hub-meta"><span>📅 3 Apr 2026</span><span>👥 58 attendees</span><span>🎙 Arjun Kapoor · Polygon</span></div>
+                    </div>
+                    <span class="proto-score">⭐ 4.2 / 5</span>
+                  </div>
+                  <div class="proto-hub-tags">
+                    <span class="proto-hub-tag">Fintech</span><span class="proto-hub-tag">AI & Tech</span>
+                  </div>
+                  <div class="proto-hub-expand">
+                    <strong>Recap:</strong> Demystified DeFi, NFTs, and supply-chain blockchain. Strong attendance from Finance track. Several members requested a follow-up on regulatory landscape.<br><br>
+                    <strong>Top feedback:</strong> "Too technical in parts", "Great real-world examples"<br><br>
+                    <strong>Venue:</strong> LRC 2 · AV: mic feedback issue in first 10 min — escalate to facilities next time<br>
+                    <strong>Speaker contact:</strong> arjun@polygon.io (confirmed open to return)
+                  </div>
+                </div>
+
+                <div class="proto-hub-card" data-cat="leadership" data-search="negotiation salary leadership workshop women soft skills" onclick="toggleHub(this)">
+                  <div class="proto-hub-head">
+                    <div>
+                      <h4>Negotiation Lab: Salary, Offers & Stakeholders</h4>
+                      <div class="proto-hub-meta"><span>📅 15 Mar 2026</span><span>👥 89 attendees</span><span>🎙 Prof. Kavitha Rao · ISB</span></div>
+                    </div>
+                    <span class="proto-score">⭐ 4.8 / 5</span>
+                  </div>
+                  <div class="proto-hub-tags">
+                    <span class="proto-hub-tag">Leadership</span><span class="proto-hub-tag">Skills</span>
+                  </div>
+                  <div class="proto-hub-expand">
+                    <strong>Recap:</strong> Role-play based workshop on salary negotiation, counter-offers, and stakeholder influence. Highest attendance of the semester. 93% said they'd recommend to others.<br><br>
+                    <strong>Top feedback:</strong> "Repeat every year", "Needs 3 hours not 2"<br><br>
+                    <strong>Venue:</strong> Auditorium B · AV: flawless · Repeat: yes, confirmed<br>
+                    <strong>Speaker contact:</strong> kavitha.rao@isb.edu
+                  </div>
+                </div>
+
+              </div>
+            </div>
           </div>
 
         </div>
 
         <div class="footer-note">
           <strong>Built this to show, not just tell.</strong><br>
-          Because if I’m applying to own events end to end, the application should feel like one.
+          Because if I'm applying to own events end to end, the application should feel like one.
         </div>
       </div>
     </div>
 
   </div><!-- /app -->
 
-  <!-- BOTTOM NAV -->
   <div class="page-nav">
     <span class="page-nav-label" id="page-label">Home · 1 of 3</span>
     <div class="page-nav-btns">
@@ -635,16 +702,64 @@
       document.getElementById('btn-next').disabled = current === pages.length - 1;
       document.getElementById('btn-next').textContent = current === pages.length - 1 ? '✓ Done' : 'Next →';
     }
+    function step(dir) { const n = current + dir; if (n >= 0 && n < pages.length) goTo(n); }
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') step(1);
+      if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   step(-1);
+    });
 
-    function step(dir) {
-      const next = current + dir;
-      if (next >= 0 && next < pages.length) goTo(next);
+    /* Proto 1 — registration */
+    function toggleProtoForm(id) { document.getElementById(id).classList.toggle('visible'); }
+    function confirmProto(formId, confId) {
+      const conf = document.getElementById(confId);
+      conf.classList.add('visible');
+      setTimeout(() => { document.getElementById(formId).classList.remove('visible'); }, 1200);
+    }
+    function toggleFeedbackForm(id) { document.getElementById(id).classList.toggle('visible'); }
+    function confirmFeedback(formId, confId) {
+      document.getElementById(confId).classList.add('visible');
+    }
+    function rateStar(rowId, n) {
+      document.querySelectorAll('#' + rowId + ' .star').forEach((s, i) => s.classList.toggle('lit', i < n));
     }
 
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') step(1);
-      if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') step(-1);
-    });
+    /* Proto 2 — calendar: Add to Outlook (.ics) */
+    function dlIcs(title, start, end, location) {
+      const uid = 'btc-' + start + '@isb.edu';
+      const now = new Date().toISOString().replace(/[-:.]/g,'').slice(0,15) + 'Z';
+      const ics = [
+        'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//BTC ISB//Events//EN',
+        'BEGIN:VEVENT','UID:' + uid,'DTSTAMP:' + now,
+        'DTSTART:' + start,'DTEND:' + end,
+        'SUMMARY:' + title,'LOCATION:' + location,
+        'DESCRIPTION:Business Technology Club — ISB Event',
+        'END:VEVENT','END:VCALENDAR'
+      ].join('\r\n');
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob([ics], {type:'text/calendar'}));
+      a.download = title.replace(/[^a-z0-9]/gi,'_') + '.ics';
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    }
+
+    /* Proto 3 — knowledge hub */
+    function toggleHub(card) {
+      card.querySelector('.proto-hub-expand').classList.toggle('open');
+    }
+    function filterHub(q) {
+      const query = q.toLowerCase();
+      document.querySelectorAll('.proto-hub-card').forEach(c => {
+        const text = (c.dataset.search || '') + ' ' + c.innerText.toLowerCase();
+        c.style.display = (!query || text.includes(query)) ? 'block' : 'none';
+      });
+    }
+    function filterHubCat(cat, btn) {
+      document.querySelectorAll('.proto-filter-row .proto-chip').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.proto-hub-card').forEach(c => {
+        const cats = c.dataset.cat || '';
+        c.style.display = (cat === 'all' || cats.includes(cat)) ? 'block' : 'none';
+      });
+    }
   </script>
 
 </body>
